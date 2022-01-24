@@ -5,7 +5,7 @@
 https://docs.qq.com/doc/DT3hMSmhOZ2lkanpQ
 ### 目录结构：
 
-
+```
 │  parse_pcap.py
 |  [...]   数据生成、处理等程序代码
 │  README.md
@@ -16,6 +16,7 @@ https://docs.qq.com/doc/DT3hMSmhOZ2lkanpQ
     │
     └─pacp
             XMR_1.8K.pcap [...]
+```
 
 #### 说明：
          data部分对应文件夹存储pacp数据包和转换的csv，命名格式为：[币种]_[算力]_[序号]。
