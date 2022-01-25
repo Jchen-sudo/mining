@@ -7,15 +7,17 @@ https://docs.qq.com/doc/DT3hMSmhOZ2lkanpQ
 
 ```
 │  parse_pcap.py
-|  [...]   数据生成、处理等程序代码
 │  README.md
 │
-└─data
-    ├─csv
-    │      XMR_1.8k.csv [...]
-    │
-    └─pacp
-            XMR_1.8K.pcap [...]
+├─data
+│  ├─csv
+│  │      XMR_1.8k.csv [...]
+│  │
+│  └─pacp
+│          XMR_1.8K.pcap [...]
+│
+└─tools
+    └─xmrig-6.16.2 [...]
 ```
 
 #### 说明：
