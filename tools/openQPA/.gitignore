@@ -1,0 +1,6 @@
+﻿#用法：忽略.xx目录或文件,除了!
+/20*
+/.idea
+!/connect/*
+*.pyc
+!connect.pyc
