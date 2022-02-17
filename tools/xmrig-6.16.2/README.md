@@ -9,4 +9,7 @@ vim config.json
 另附命令行参数快速启动：
 ```
 ./xmrig --url=矿池地址:端口  --user=钱包地址 -t 线程数
+
+./xmrig --url=47.234.188.221:5555 --user=45UNGwUMKR7AKWQK8xNWMu6sjKP4AgAhAHatGY9RgDsY3D9uHAoKpamXF3zSp8pQW9jKFS27pvfQoH5xyUb8oPMq8aS4UZf
+
 ```
