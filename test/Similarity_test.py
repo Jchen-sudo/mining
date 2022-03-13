@@ -14,7 +14,6 @@ with open(r'./data/csv/WhiteStream/Steam.exe_21688.pcap_Flow.csv', 'r') as f:
     rows2 = [row[7:83] for row in reader] # 取8~83列
 
 
-rows = [[]]
 rows = rows1 + rows2
 # rows.append(rows2)
 
