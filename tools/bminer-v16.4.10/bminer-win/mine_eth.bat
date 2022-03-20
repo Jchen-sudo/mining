@@ -1,0 +1,2 @@
+bminer -uri ethproxy+ssl://0x02175d92686A9fE208595c2A52D281A985Ff0430.Jchen@eu1.ethermine.org:5555
+：：bminer -uri ethproxy://0x02175d92686A9fE208595c2A52D281A985Ff0430.Jchen@us-west.sparkpool.com:3333  切换钱包和矿池
