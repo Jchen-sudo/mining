@@ -1,0 +1,13 @@
+2022-03-05 12:33:43 DEBUG cic.cs.unb.ca.flow.ui.FlowMonitorPane    java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava/lang/String;)J
+2022-03-05 12:33:43 DEBUG cic.cs.unb.ca.flow.ui.FlowMonitorPane    java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava/lang/String;)J
+2022-03-05 12:33:48 DEBUG cic.cs.unb.ca.flow.ui.FlowMonitorPane    java.lang.NoClassDefFoundError: Could not initialize class org.jnetpcap.Pcap
+2022-03-05 12:33:48 DEBUG cic.cs.unb.ca.flow.ui.FlowMonitorPane    java.lang.NoClassDefFoundError: Could not initialize class org.jnetpcap.Pcap
+2022-03-05 12:36:44 DEBUG cic.cs.unb.ca.flow.ui.FlowMonitorPane    java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava/lang/String;)J
+2022-03-05 12:36:44 DEBUG cic.cs.unb.ca.flow.ui.FlowMonitorPane    java.lang.UnsatisfiedLinkError: com.slytechs.library.NativeLibrary.dlopen(Ljava/lang/String;)J
+2022-03-05 12:37:10 DEBUG swing.common.SwingUtils    C:\Users\Jchen\Desktop\CICFlowMeter\src (拒绝访问。)
+2022-03-05 12:37:29 DEBUG cic.cs.unb.ca.flow.ui.FlowOfflinePane    offline select input C:\Users\Jchen\Desktop\加密货币流量分析\github仓库\data\pacp\数据集\2020.2.19_1.pcap
+2022-03-05 12:37:40 DEBUG cic.cs.unb.ca.flow.ui.FlowOfflinePane    offline select output C:\Users\Jchen\Desktop\加密货币流量分析\github仓库\data\csv
+2022-03-05 12:43:13 DEBUG swing.common.SwingUtils    C:\Users\Jchen\Desktop\CICFlowMeter\logs (拒绝访问。)
+2022-03-05 12:43:13 DEBUG swing.common.SwingUtils    C:\Users\Jchen\Desktop\CICFlowMeter\src (拒绝访问。)
+2022-03-05 12:43:26 DEBUG cic.cs.unb.ca.flow.ui.FlowOfflinePane    offline select input C:\Users\Jchen\Desktop\data\pacp\minedata\2020.2.19_1.pcap
+2022-03-05 12:43:36 DEBUG cic.cs.unb.ca.flow.ui.FlowOfflinePane    offline select output C:\Users\Jchen\Desktop\data\csv
