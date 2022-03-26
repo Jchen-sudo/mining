@@ -23,6 +23,11 @@ if __name__ == '__main__':
 
     # 解析参数
     args = parser.parse_args()
+    
+    if not args.input:
+        print('input file is needed')
+        exit()
+
     print('input:', args.input)
     if not args.output:
         args.output = args.input[:-4] + '_labeled.csv'
