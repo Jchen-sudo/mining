@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Monero(XMR)门罗币矿池实时信息</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#efefef" />
+<link rel="stylesheet" type="text/css" href="../../static/media/css/style.css" />
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<body class="C0bkl">
+<header>
+	<div id="HeadMenu"><select class="txtmed C2 C0bkl"></select><div class="select-point C1fl rot90"></div></div>
+	<div id="TogMode" class="C1fl hov"></div>
+	<div id="Timer" class="hov">
+		<div id="TimerPie" class="C1bk">
+			<div id="TimerDisc" class="C0bkl"></div>
+			<div id="TimerText" class="txttny C1 noselect"></div>
+		</div>
+		<div id="TimerRefresh" class="C2fl C0bkl hide"></div>
+		<div id="TimerLoader" class="C1fl C0bkl preload hide"></div>
+	</div>
+</header>
+<div id="NetGraph"></div>
+<div id="Addr" class="LR85">
+	<div class="SplitL">
+		<table class="C3l"><tr>
+			<td class="hide"><div id="AddrRecent"><select class="C3l C0bkl txttny"></select><div class="select-point C1fl rot90"></div></div></td>
+			<td class="hide"><div id="AddrDelete" class="Btn16 C1fl"></div></td>
+			<td width="99%"><div class="hbar"></div><div id="DashAddrCell"><input id="AddrField" type="text" class="FLDl txt C3l" autofocus></div><div class="hbar"></div></td>
+		</tr></table>
+	</div>
+	<div class="SplitR">
+		<table class="C3l"><tr>
+			<td width="40%"><span id="DashPending" class="txtbig">--</span><div class="pbar"></div><span id="DashPendingLbl" class="txttny C2 noselect">--</span></td>
+			<td width="20%"><div id="DashPayBtn" class="nopoint"><div class="Loader C1fl"></div></div></td>
+			<td width="40%"><span id="DashPaid" class="txtbig">--</span><div class="pbar"></div><span id="DashPaidLbl" class="txttny C2 noselect">--</span></td>
+		</tr></table>
+	</div>
+</div>
+<div id="Stage" class="StageFade">
+
+
+</div>
+<footer class="C0bkgrdl">
+	<div id="FootR" class="txtmed C2 right"></div>
+</footer>
+</body>
+<script type="text/javascript" src="../../static/media/js/script_min.js"></script>
+<script>
+	init();
+</script>
+</html>
