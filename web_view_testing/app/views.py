@@ -11,7 +11,7 @@ from .utils.ipmap_tools import getmyip, get_ipmap, get_geo
 from .utils.data_extract import web_data, telnet_ftp_data, mail_data, sen_data, client_info
 from .utils.except_info import exception_warning
 from .utils.file_extract import web_file, ftp_file, mail_file, all_files
-from scapy.all import rdpcap
+from scapy.all import rdpcap, PacketList
 import os
 import hashlib
 
@@ -22,6 +22,21 @@ ONPCAPS = None
 PCAPS = None
 ONPCAPS = rdpcap(os.path.join(filepath, ONPCAPS_NAME))
 
+from datetime import datetime, timedelta
+def pcap_cut(t: int) -> PacketList:
+    dirPath = './database/pcaps/'
+    p = PacketList()
+    for i in range(0, t):
+        lt = datetime.now() - timedelta(minutes=i)
+        filePath = f'{dirPath}{lt.strftime("%Y-%m-%d %H:%M")}.pcap'
+        # check if file exists
+        if os.path.exists(filePath):
+            print(filePath)
+            p = rdpcap(filePath) + p # 保持时间顺序
+    assert p.__len__() > 0
+    return p
+    
+
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index/', methods=['POST', 'GET'])
 def index():
@@ -30,7 +45,8 @@ def index():
 
 @app.route('/flow/')
 def flow():
-    #ONPCAPS = rdpcap(os.path.join(filepath, ONPCAPS_NAME))     #读取实时流量数据包
+    global ONPCAPS
+    ONPCAPS = pcap_cut(2)    #读取实时流量数据包
     time_flow_dict = time_flow(ONPCAPS)
     host_ip = get_host_ip(ONPCAPS)
     data_flow_dict = data_flow(ONPCAPS, host_ip)
@@ -44,7 +60,14 @@ def flow():
     most_flow_key = list()
     for key, value in most_flow_dict:
         most_flow_key.append(key)
-    return render_template('./dataanalyzer/flowanalyzer.html', time_flow_keys=list(time_flow_dict.keys()), time_flow_values=list(time_flow_dict.values()), data_flow=data_flow_dict, ip_flow=data_ip_dict, proto_flow=list(proto_flow_dict.values()), most_flow_key=most_flow_key, most_flow_dict=most_flow_dict) 
+    return render_template(
+        './dataanalyzer/flowanalyzer.html', 
+        time_flow_keys=list(time_flow_dict.keys()), 
+        time_flow_values=list(time_flow_dict.values()), 
+        data_flow=data_flow_dict, ip_flow=data_ip_dict, 
+        proto_flow=list(proto_flow_dict.values()), 
+        most_flow_key=most_flow_key, 
+        most_flow_dict=most_flow_dict) 
 
 #---------------------------在线分析/基本信息---------------------------------#
 @app.route('/online/database/', methods=['GET', 'POST'])
