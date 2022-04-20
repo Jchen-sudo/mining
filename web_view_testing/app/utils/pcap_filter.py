@@ -71,7 +71,7 @@ def proto_filter(filter_type, value, PCAPS, PD):
 def showdata_from_id(PCAPS, dataid):
     pcap = PCAPS[dataid]
     # 输出重定向数据
-    show_temp_name = tempfile.NamedTemporaryFile(prefix='show_', dir='/tmp')
+    show_temp_name = tempfile.NamedTemporaryFile(prefix='show_', dir='./tmp')
     old = sys.stdout
     show_file = open(show_temp_name.name, 'w')
     sys.stdout = show_file
