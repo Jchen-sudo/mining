@@ -89,19 +89,48 @@ def online_basedata():
         # 默认显示所有的协议数据
         else:
             pcaps = get_all_pcap(ONPCAPS, PD)
-        return render_template('./dataanalyzer/basedata.html', pcaps=pcaps)
+        return render_template('./dataanalyzer/onbasedata.html', pcaps=pcaps)
+
 #详细数据
-@app.route('/datashow/', methods=['POST', 'GET'])
-def datashow():
+@app.route('/ondatashow/', methods=['POST', 'GET'])
+def ondatashow():
     if ONPCAPS == None:
         flash("请先上传要分析的数据包!")
         return redirect(url_for('upload'))
     else:
-        global PDF_NAME
         dataid = request.args.get('id')
         dataid = int(dataid) - 1
-        data = showdata_from_id(PCAPS, dataid)
+        data = showdata_from_id(ONPCAPS, dataid)
         return data
+
+#---------------------------在线分析/协议分析---------------------------------#
+@app.route('/online/protoanalyzer/', methods=['POST', 'GET'])
+def online_protoanalyzer():
+    global ONPCAPS,PD
+    if ONPCAPS == None:
+        flash("请先上传要分析的数据包!")
+        return redirect(url_for('index'))
+    else:
+        data_dict = common_proto_statistic(ONPCAPS)
+        pcap_len_dict = pcap_len_statistic(ONPCAPS)
+        pcap_count_dict = most_proto_statistic(ONPCAPS, PD)
+        http_dict = http_statistic(ONPCAPS)
+        http_dict = sorted(http_dict.items(),
+                           key=lambda d: d[1], reverse=False)
+        http_key_list = list()
+        http_value_list = list()
+        for key, value in http_dict:
+            http_key_list.append(key)
+            http_value_list.append(value)
+        dns_dict = dns_statistic(ONPCAPS)
+        dns_dict = sorted(dns_dict.items(), key=lambda d: d[1], reverse=False)
+        dns_key_list = list()
+        dns_value_list = list()
+        for key, value in dns_dict:
+            dns_key_list.append(key.decode('utf-8'))
+            dns_value_list.append(value)
+        return render_template('./dataanalyzer/protoanalyzer.html', data=list(data_dict.values()), pcap_len=pcap_len_dict, pcap_keys=list(pcap_count_dict.keys()), http_key=http_key_list, http_value=http_value_list, dns_key=dns_key_list, dns_value=dns_value_list, pcap_count=pcap_count_dict)
+
 
 
 #---------------------------离线分析/数据包上传---------------------------------#
@@ -132,6 +161,68 @@ def upload():
                 return render_template('./upload/upload.html')
         else:
             return render_template('./upload/upload.html')
+
+#---------------------------离线分析/基本信息---------------------------------#
+@app.route('/database/', methods=['GET', 'POST'])
+def basedata():
+    '''
+    基础数据解析
+    '''
+    global PCAPS,PD
+    if PCAPS == None:
+        flash("请先上传离线数据!")
+        return redirect(url_for('upload'))
+    else:
+        # 将筛选的type和value通过表单获取
+        filter_type = request.form.get('filter_type', type=str, default=None)
+        value = request.form.get('value', type=str, default=None)
+        # 如果有选择，通过选择来获取值
+        if filter_type and value:
+            pcaps = proto_filter(filter_type, value, PCAPS, PD)
+        # 默认显示所有的协议数据
+        else:
+            pcaps = get_all_pcap(PCAPS, PD)
+        return render_template('./dataanalyzer/basedata.html', pcaps=pcaps)
+
+#详细数据
+@app.route('/datashow/', methods=['POST', 'GET'])
+def datashow():
+    global PCAPS,PD
+    if PCAPS == None:
+        flash("请先上传要分析的数据包!")
+        return redirect(url_for('upload'))
+    else:
+        dataid = request.args.get('id')
+        dataid = int(dataid) - 1
+        data = showdata_from_id(PCAPS, dataid)
+        return data
+#-------------------------------离线分析/协议分析------------------------------#
+@app.route('/protoanalyzer/', methods=['POST', 'GET'])
+def protoanalyzer():
+    global PCAPS,PD
+    if PCAPS == None:
+        flash("请先上传要分析的数据包!")
+        return redirect(url_for('upload'))
+    else:
+        data_dict = common_proto_statistic(PCAPS)
+        pcap_len_dict = pcap_len_statistic(PCAPS)
+        pcap_count_dict = most_proto_statistic(PCAPS, PD)
+        http_dict = http_statistic(PCAPS)
+        http_dict = sorted(http_dict.items(),
+                           key=lambda d: d[1], reverse=False)
+        http_key_list = list()
+        http_value_list = list()
+        for key, value in http_dict:
+            http_key_list.append(key)
+            http_value_list.append(value)
+        dns_dict = dns_statistic(PCAPS)
+        dns_dict = sorted(dns_dict.items(), key=lambda d: d[1], reverse=False)
+        dns_key_list = list()
+        dns_value_list = list()
+        for key, value in dns_dict:
+            dns_key_list.append(key.decode('utf-8'))
+            dns_value_list.append(value)
+        return render_template('./dataanalyzer/protoanalyzer.html', data=list(data_dict.values()), pcap_len=pcap_len_dict, pcap_keys=list(pcap_count_dict.keys()), http_key=http_key_list, http_value=http_value_list, dns_key=dns_key_list, dns_value=dns_value_list, pcap_count=pcap_count_dict)
 
 @app.route('/xmr/')
 def xmr():

@@ -19,7 +19,7 @@
 <br>
 
 <div class="container">
-    <form class="form-inline" method="POST" action="{{ url_for('online_basedata') }}">
+    <form class="form-inline" method="POST" action="{{ url_for('basedata') }}">
   <div class="form-group">
     <label for="proto">协议过滤 : </label>&nbsp;&nbsp;
       <select class="form-control" name="filter_type">&nbsp;&nbsp;
@@ -123,15 +123,7 @@
     });
 })
 
-    function savepdf()
-    {
-        $.ajax({
-        type: "GET",//jquery 请求方式为 get
-        url: "/savepdf?id="+id,//jquery 请求URL
-        dataType: "html",//jquery接受类型 可以 json js html 等数据
-        cache: false,//是否缓存
-    });
-    }
+    
 </script>
 <!--自动补全-->
 <script>
