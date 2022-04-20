@@ -85,6 +85,9 @@ def api_flow_async():
     most_flow_key = list()
     for key, value in most_flow_dict:
         most_flow_key.append(key)
+        
+    # {% for key, value in most_flow_dict %}
+    # {value:{{ value }}, name:'{{ key }}'},
     r =  {
         'time_flow_keys':list(time_flow_dict.keys()), 
         'time_flow_values':list(time_flow_dict.values()), 
@@ -92,7 +95,7 @@ def api_flow_async():
         'ip_flow':data_ip_dict, 
         'proto_flow':list(proto_flow_dict.values()), 
         'most_flow_key':most_flow_key, 
-        'most_flow_dict':most_flow_dict
+        'most_flow_dict':[{'value':value,'name':key} for key, value in most_flow_dict]
     }
     # 返回json数据
     return jsonify(r)

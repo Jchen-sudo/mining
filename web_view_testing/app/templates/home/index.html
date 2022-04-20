@@ -324,23 +324,9 @@
 			<!-- <iframe class="main-content" src="../../xmr.html" name="main-content" scrolling="auto"></iframe> -->
 
 
-			<iframe class="main-content" id="flow_reflash"  src="{{ url_for('flow') }}" name="main-content" scrolling="auto"></iframe> 
+			<iframe class="main-content" id="flow_reflash"  src="{{ url_for('flow_async') }}" name="main-content" scrolling="auto"></iframe> 
 			
-			<!-- <input type="button" onclick="javascript:chatIframeStop();" value="stop Refresh" />
-			<script type="text/javascript">
-				var chatIframeTimer = setInterval("chatIframeReload()", 1000);//1000为1秒钟
-				function chatIframeReload() {
-					document.getElementById('flow_reflash').contentWindow.location.reload(true);
-				}
-				function chatIframeStop() {
-					if (chatIframeTimer) {
-						window.clearTimeout(chatIframeTimer);
-						alert("stop Refresh");
-					} else {
-						alert("no Refresh");
-					}
-				}
-			</script> -->
+
 		</div>   
 		<!-- END PAGE -->
 	</div>

@@ -38,74 +38,74 @@
 {% autoescape false %}
     <!-- ECharts单文件引入 -->
     <script src="../../static/echarts-2.27/build/dist/echarts.js" type="text/javascript"></script>
-    <!--时间流量曲线图-->
-    <script type="text/javascript">
-        // 路径配置
-        require.config({
-            paths: {
-                echarts: '../../static/echarts-2.27/build/dist/'
-            }
-        });
+<!--时间流量曲线图-->
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: '../../static/echarts-2.27/build/dist/'
+        }
+    });
 
-        // 使用
-        require(
-            [
-                'echarts',
-                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
-            ],
-            function (ec) {
-                // 基于准备好的dom，初始化echarts图表
-                var myChart = ec.init(document.getElementById('time_flow'));
+    // 使用
+    require(
+        [
+            'echarts',
+            'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+        ],
+        function (ec) {
+            // 基于准备好的dom，初始化echarts图表
+            var myChart = ec.init(document.getElementById('time_flow'));
 
-                var option = {
-                    title : {
-                        text: '时间流量图',
-                        x:'center'
-                    },
-                    tooltip : {
-                        trigger: 'axis'
-                    },
-                    calculable : false,
-                    xAxis : [
-                        {
-                            type : 'category',
-                            name : '相对时间',
-                            boundaryGap : true,
-                            data : {{ time_flow_keys }}
+            var option = {
+                title : {
+                    text: '时间流量图',
+                    x:'center'
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                calculable : false,
+                xAxis : [
+                    {
+                        type : 'category',
+                        name : '相对时间',
+                        boundaryGap : true,
+                        data : {{ time_flow_keys }}
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name : '数据包字节',
+                        axisLabel : {
+                            formatter: '{value} byte'
                         }
-                    ],
-                    yAxis : [
-                        {
-                            type : 'value',
-                            name : '数据包字节',
-                            axisLabel : {
-                                formatter: '{value} byte'
-                            }
-                        }
-                    ],
-                    series : [
-                        {
-                            name:'数据包字节',
-                            type:'line',
-                            smooth:true,
-                            symbol: 'none',
-                            itemStyle:{
-                                normal:{
-                                    label:{show:true},
-                                    color:'#6495ed', //图例颜色设置
-                                    },
-                                emphasis:{label:{show:true}}
-                                    },
-                            data:{{ time_flow_values }}
-                        }
-                    ]
-                };
+                    }
+                ],
+                series : [
+                    {
+                        name:'数据包字节',
+                        type:'line',
+                        smooth:true,
+                        symbol: 'none',
+                        itemStyle:{
+                            normal:{
+                                label:{show:true},
+                                color:'#6495ed', //图例颜色设置
+                                },
+                            emphasis:{label:{show:true}}
+                                },
+                        data:{{ time_flow_values }}
+                    }
+                ]
+            };
 
-                // 为echarts对象加载数据
-                myChart.setOption(option);
-            }
-        );
-    </script>
+            // 为echarts对象加载数据
+            myChart.setOption(option);
+        }
+    );
+</script>
 
 <!--流入流出饼状图-->
 <script type="text/javascript">
