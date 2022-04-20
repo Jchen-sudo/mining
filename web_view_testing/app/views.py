@@ -16,11 +16,11 @@ import os
 import hashlib
 
 PD = PcapDecode()  # 解析器
-filepath = './app'
+filepath = './database/'
 ONPCAPS_NAME = 'XMR_1.8K.pcap'
 ONPCAPS = None
 PCAPS = None
-ONPCAPS = rdpcap(os.path.join(filepath, ONPCAPS_NAME))
+# ONPCAPS = rdpcap(os.path.join(filepath, ONPCAPS_NAME))
 
 from datetime import datetime, timedelta
 def pcap_cut(t: int) -> PacketList:
