@@ -1,6 +1,6 @@
 from tkinter.messagebox import NO
 from app import app
-from flask import render_template, request, flash, redirect, url_for, send_from_directory
+from flask import jsonify, render_template, request, flash, redirect, url_for, send_from_directory
 from .forms import Upload, ProtoFilter
 from .utils.upload_tools import allowed_file, get_filetype, random_name
 from .utils.pcap_decode import PcapDecode
@@ -31,7 +31,6 @@ def pcap_cut(t: int) -> PacketList:
         filePath = f'{dirPath}{lt.strftime("%Y-%m-%d %H:%M")}.pcap'
         # check if file exists
         if os.path.exists(filePath):
-            print(filePath)
             p = rdpcap(filePath) + p # 保持时间顺序
     assert p.__len__() > 0
     return p
@@ -68,6 +67,40 @@ def flow():
         proto_flow=list(proto_flow_dict.values()), 
         most_flow_key=most_flow_key, 
         most_flow_dict=most_flow_dict) 
+
+@app.route('/api/flow_async/')
+def api_flow_async():
+    global ONPCAPS
+    ONPCAPS = pcap_cut(2)    #读取实时流量数据包
+    time_flow_dict = time_flow(ONPCAPS)
+    host_ip = get_host_ip(ONPCAPS)
+    data_flow_dict = data_flow(ONPCAPS, host_ip)
+    data_ip_dict = data_in_out_ip(ONPCAPS, host_ip)
+    proto_flow_dict = proto_flow(ONPCAPS)
+    most_flow_dict = most_flow_statistic(ONPCAPS, PD)
+    most_flow_dict = sorted(most_flow_dict.items(),
+                            key=lambda d: d[1], reverse=True)
+    if len(most_flow_dict) > 10:
+        most_flow_dict = most_flow_dict[0:10]
+    most_flow_key = list()
+    for key, value in most_flow_dict:
+        most_flow_key.append(key)
+    r =  {
+        'time_flow_keys':list(time_flow_dict.keys()), 
+        'time_flow_values':list(time_flow_dict.values()), 
+        'data_flow':data_flow_dict, 
+        'ip_flow':data_ip_dict, 
+        'proto_flow':list(proto_flow_dict.values()), 
+        'most_flow_key':most_flow_key, 
+        'most_flow_dict':most_flow_dict
+    }
+    # 返回json数据
+    return jsonify(r)
+
+@app.route('/flow_async/')
+def flow_async():
+    return render_template('./dataanalyzer/asyncflowanalyzer.html')
+
 
 #---------------------------在线分析/基本信息---------------------------------#
 @app.route('/online/database/', methods=['GET', 'POST'])

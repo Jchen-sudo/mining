@@ -11,8 +11,8 @@ def time_flow(PCAPS):
     start = PCAPS[0].time
     time_flow_dict[time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(PCAPS[0].time))] = len(corrupt_bytes(PCAPS[0]))
     for pcap in PCAPS:
-        timediff = pcap.time - start
-        time_flow_dict[float('%.3f'%timediff)] = len(corrupt_bytes(pcap))
+        # timediff = pcap.time - start
+        time_flow_dict[time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pcap.time))] = len(corrupt_bytes(pcap))
     return time_flow_dict
 
 #获取抓包主机的IP

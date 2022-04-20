@@ -322,25 +322,25 @@
 		<div class="page-content" id="div-content">
 			<!-- <a class="main-content" name="main-content" scrolling="auto">实时流量可视化图表</a> -->
 			<!-- <iframe class="main-content" src="../../xmr.html" name="main-content" scrolling="auto"></iframe> -->
-			<a href="{{url_for('flow')}}" id="flow_reflash" target="main-content">
-				<button id="reflash_button">修改 href 值</button>
 
-					<script>
 
-						$(document).ready(function(){
-							$("#reflash_button").click(function(){
-							  $("#flow_reflash").attr("href","{{url_for('flow')}}");
-							});
-						  });
-
-						/* (function(){
-							
-							setTimeout(arguments.callee, 1000);
-							alert("reflash");
-						})(); */
-					</script>
-
-			<iframe class="main-content" src="{{ url_for('flow') }}" id="flow_reflash"  name="main-content" scrolling="auto"></iframe> 
+			<iframe class="main-content" id="flow_reflash"  src="{{ url_for('flow') }}" name="main-content" scrolling="auto"></iframe> 
+			
+			<!-- <input type="button" onclick="javascript:chatIframeStop();" value="stop Refresh" />
+			<script type="text/javascript">
+				var chatIframeTimer = setInterval("chatIframeReload()", 1000);//1000为1秒钟
+				function chatIframeReload() {
+					document.getElementById('flow_reflash').contentWindow.location.reload(true);
+				}
+				function chatIframeStop() {
+					if (chatIframeTimer) {
+						window.clearTimeout(chatIframeTimer);
+						alert("stop Refresh");
+					} else {
+						alert("no Refresh");
+					}
+				}
+			</script> -->
 		</div>   
 		<!-- END PAGE -->
 	</div>
