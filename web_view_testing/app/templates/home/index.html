@@ -322,7 +322,25 @@
 		<div class="page-content" id="div-content">
 			<!-- <a class="main-content" name="main-content" scrolling="auto">实时流量可视化图表</a> -->
 			<!-- <iframe class="main-content" src="../../xmr.html" name="main-content" scrolling="auto"></iframe> -->
-			<iframe class="main-content" src="{{ url_for('flow') }}" name="main-content" scrolling="auto"></iframe> 
+			<a href="{{url_for('flow')}}" id="flow_reflash" target="main-content">
+				<button id="reflash_button">修改 href 值</button>
+
+					<script>
+
+						$(document).ready(function(){
+							$("#reflash_button").click(function(){
+							  $("#flow_reflash").attr("href","{{url_for('flow')}}");
+							});
+						  });
+
+						/* (function(){
+							
+							setTimeout(arguments.callee, 1000);
+							alert("reflash");
+						})(); */
+					</script>
+
+			<iframe class="main-content" src="{{ url_for('flow') }}" id="flow_reflash"  name="main-content" scrolling="auto"></iframe> 
 		</div>   
 		<!-- END PAGE -->
 	</div>

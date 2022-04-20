@@ -1,5 +1,6 @@
 from datetime import datetime
 from scapy.all import sniff, wrpcap
+import os
 # https://www.osgeo.cn/scapy/api/scapy.sendrecv.html?highlight=sniff#scapy.sendrecv.sniff
 
 _TIME_TEMPLATE = "%Y-%m-%d %H:%M"
@@ -12,6 +13,9 @@ def sniff_callback(packet):
     wrpcap(f'./database/pcaps/{datetime.now().strftime(_TIME_TEMPLATE)}.pcap',packet, append=True)
 
 def sniff_main():
+    # 判断是否存在pcaps文件夹
+    if not os.path.exists('./database/pcaps/'):
+        os.mkdir('./database/pcaps/')
     filter = ""
     sniff(filter=filter, prn=sniff_callback,  count=0)
 
