@@ -2,13 +2,17 @@
 __author__ = 'dj'
 
 from scapy.all import *
+from scapy.layers.inet import IP, TCP, UDP, ICMP
+from scapy.layers.inet6 import IPv6, ICMPv6ND_NS
+from scapy.layers.l2 import ARP
+from scapy.layers.dns import DNS
 import collections
 import time
+
 
 #时间流量图
 def time_flow(PCAPS):
     time_flow_dict = collections.OrderedDict()
-    start = PCAPS[0].time
     time_flow_dict[time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(PCAPS[0].time))] = len(corrupt_bytes(PCAPS[0]))
     for pcap in PCAPS:
         # timediff = pcap.time - start

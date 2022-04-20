@@ -262,5 +262,4 @@ def protoanalyzer():
 
 @app.route('/xmr/')
 def xmr():
-
     return render_template('./evidence/xmr.html')
