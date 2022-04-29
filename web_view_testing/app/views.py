@@ -260,7 +260,7 @@ def protoanalyzer():
             dns_value_list.append(value)
         return render_template('./dataanalyzer/protoanalyzer.html', data=list(data_dict.values()), pcap_len=pcap_len_dict, pcap_keys=list(pcap_count_dict.keys()), http_key=http_key_list, http_value=http_value_list, dns_key=dns_key_list, dns_value=dns_value_list, pcap_count=pcap_count_dict)
 
-#---------------------------------------挖矿告警---------------------------------#   
+#---------------------------------------离线/挖矿告警---------------------------------#   
 @app.route('/exceptinfo/', methods=['POST', 'GET'])
 def exceptinfo():
     if PCAPS == None:
@@ -270,6 +270,24 @@ def exceptinfo():
         dataid = request.args.get('id')
         host_ip = get_host_ip(PCAPS)
         warning_list = exception_warning(PCAPS, host_ip)
+        if dataid:
+            if warning_list[int(dataid)-1]['data']:
+                return warning_list[int(dataid)-1]['data'].replace('\r\n', '<br>')
+            else:
+                return '<center><h3>无相关数据包详情</h3></center>'
+        else:
+            return render_template('./exceptions/exception.html', warning=warning_list)
+
+#---------------------------------------在线/挖矿告警---------------------------------#  
+@app.route('/onexceptinfo/', methods=['POST', 'GET'])
+def onexceptinfo():
+    if ONPCAPS == None:
+        flash("系统正在初始化，请稍等")
+        return redirect(url_for('upload'))
+    else:
+        dataid = request.args.get('id')
+        host_ip = get_host_ip(ONPCAPS)
+        warning_list = exception_warning(ONPCAPS, host_ip)
         if dataid:
             if warning_list[int(dataid)-1]['data']:
                 return warning_list[int(dataid)-1]['data'].replace('\r\n', '<br>')
