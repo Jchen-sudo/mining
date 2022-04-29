@@ -7,7 +7,6 @@ method : 特征字段匹配
 target : 特征字段匹配
 algo : 特征字段匹配
 result : 特征字段匹配
-
 @variable : SQL注入攻击
 ,@variable : SQL注入攻击
 PRINT : SQL注入攻击
