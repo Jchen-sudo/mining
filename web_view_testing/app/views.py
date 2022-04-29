@@ -15,11 +15,14 @@ from scapy.all import rdpcap, PacketList
 import os
 import hashlib
 
+# 导入函数到模板中
+app.jinja_env.globals['enumerate'] = enumerate
+
 PD = PcapDecode()  # 解析器
 filepath = './database/'
-ONPCAPS_NAME = 'XMR_1.8K.pcap'
+PCAP_NAME = '2K.pcap'
 ONPCAPS = None
-PCAPS = None
+PCAPS = rdpcap(os.path.join(filepath, PCAP_NAME)) 
 # ONPCAPS = rdpcap(os.path.join(filepath, ONPCAPS_NAME))
 
 from datetime import datetime, timedelta
@@ -85,9 +88,6 @@ def api_flow_async():
     most_flow_key = list()
     for key, value in most_flow_dict:
         most_flow_key.append(key)
-        
-    # {% for key, value in most_flow_dict %}
-    # {value:{{ value }}, name:'{{ key }}'},
     r =  {
         'time_flow_keys':list(time_flow_dict.keys()), 
         'time_flow_values':list(time_flow_dict.values()), 
@@ -95,7 +95,7 @@ def api_flow_async():
         'ip_flow':data_ip_dict, 
         'proto_flow':list(proto_flow_dict.values()), 
         'most_flow_key':most_flow_key, 
-        'most_flow_dict':[{'value':value,'name':key} for key, value in most_flow_dict]
+        'most_flow_dict':most_flow_dict
     }
     # 返回json数据
     return jsonify(r)
@@ -260,6 +260,26 @@ def protoanalyzer():
             dns_value_list.append(value)
         return render_template('./dataanalyzer/protoanalyzer.html', data=list(data_dict.values()), pcap_len=pcap_len_dict, pcap_keys=list(pcap_count_dict.keys()), http_key=http_key_list, http_value=http_value_list, dns_key=dns_key_list, dns_value=dns_value_list, pcap_count=pcap_count_dict)
 
+#---------------------------------------挖矿告警---------------------------------#   
+@app.route('/exceptinfo/', methods=['POST', 'GET'])
+def exceptinfo():
+    if PCAPS == None:
+        flash("请先上传要分析的数据包!")
+        return redirect(url_for('upload'))
+    else:
+        dataid = request.args.get('id')
+        host_ip = get_host_ip(PCAPS)
+        warning_list = exception_warning(PCAPS, host_ip)
+        if dataid:
+            if warning_list[int(dataid)-1]['data']:
+                return warning_list[int(dataid)-1]['data'].replace('\r\n', '<br>')
+            else:
+                return '<center><h3>无相关数据包详情</h3></center>'
+        else:
+            return render_template('./exceptions/exception.html', warning=warning_list)
+
+
 @app.route('/xmr/')
 def xmr():
+
     return render_template('./evidence/xmr.html')

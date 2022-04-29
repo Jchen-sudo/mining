@@ -1,4 +1,13 @@
-###IOC解析
+jsonrpc : 特征字段匹配
+method  : 特征字段匹配
+params : 特征字段匹配
+blob  : 特征字段匹配
+seed_hash : 特征字段匹配
+method : 特征字段匹配
+target : 特征字段匹配
+algo : 特征字段匹配
+result : 特征字段匹配
+
 @variable : SQL注入攻击
 ,@variable : SQL注入攻击
 PRINT : SQL注入攻击

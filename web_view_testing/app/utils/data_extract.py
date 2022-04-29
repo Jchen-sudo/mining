@@ -1,5 +1,5 @@
 #coding:UTF-8
-__author__ = 'dj'
+
 
 from scapy.all import *
 from collections import OrderedDict
@@ -8,7 +8,6 @@ import time
 import binascii
 import base64
 
-#Web连接数据HTTP 80,8080
 def web_data(PCAPS, host_ip):
     ip_port_id_list = list()
     id = 0
@@ -18,24 +17,24 @@ def web_data(PCAPS, host_ip):
             dst = pcap.getlayer(IP).dst
             sport = pcap.sport
             dport = pcap.dport
-            if sport == 80 or sport == 8080:
+            if src == host_ip:
                 port = dport
                 if src == host_ip:
                     ip = dst
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'HTTP', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
                 elif dst == host_ip:
                     ip = src
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'HTTP', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
                 else:
                     pass
-            elif dport == 80 or dport == 8080:
+            if dst == host_ip:
                 port = sport
                 if src == host_ip:
                     ip = dst
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'HTTP', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
                 elif dst == host_ip:
                     ip = src
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'HTTP', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
                 else:
                     pass
             else:

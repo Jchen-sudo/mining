@@ -1,5 +1,4 @@
 #coding:UTF-8
-__author__ = 'dj'
 
 from scapy.all import *
 import collections
