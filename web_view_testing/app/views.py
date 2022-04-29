@@ -1,3 +1,4 @@
+import imp
 from tkinter.messagebox import NO
 from app import app
 from flask import jsonify, render_template, request, flash, redirect, url_for, send_from_directory
@@ -47,6 +48,7 @@ def index():
 
 @app.route('/flow/')
 def flow():
+    '''返回静态的实时流量分析页面'''
     global ONPCAPS
     ONPCAPS = pcap_cut(2)    #读取实时流量数据包
     time_flow_dict = time_flow(ONPCAPS)
@@ -73,6 +75,7 @@ def flow():
 
 @app.route('/api/flow_async/')
 def api_flow_async():
+    '''实时流量分析api'''
     global ONPCAPS
     ONPCAPS = pcap_cut(2)    #读取实时流量数据包
     time_flow_dict = time_flow(ONPCAPS)
@@ -102,6 +105,7 @@ def api_flow_async():
 
 @app.route('/flow_async/')
 def flow_async():
+    '''动态的实时流量分析展示界面'''
     return render_template('./dataanalyzer/asyncflowanalyzer.html')
 
 
@@ -278,6 +282,21 @@ def exceptinfo():
         else:
             return render_template('./exceptions/exception.html', warning=warning_list)
 
+@app.route('/api/exceptinfo/')
+def api_exceptinfo():
+    if PCAPS == None:
+        return jsonify([])
+    else:
+        host_ip = get_host_ip(PCAPS)
+        warning_list = exception_warning(PCAPS, host_ip)
+        return jsonify(except_visual.get_all(warning_list))
+    
+@app.route('/warn_async/')
+def warn_async():
+    '''动态的实时流量分析展示界面'''
+    return render_template('./exceptions/asyncwarn.html')
+
+
 #---------------------------------------在线/挖矿告警---------------------------------#  
 @app.route('/onexceptinfo/', methods=['POST', 'GET'])
 def onexceptinfo():
@@ -296,8 +315,27 @@ def onexceptinfo():
         else:
             return render_template('./exceptions/exception.html', warning=warning_list)
 
+from .utils import except_visual
+@app.route('/api/onexceptinfo/')
+def api_onexceptinfo():
+    if ONPCAPS == None:
+        return jsonify([])
+    else:
+        host_ip = get_host_ip(ONPCAPS)
+        warning_list = exception_warning(ONPCAPS, host_ip)
+        return jsonify(except_visual.get_all(warning_list))
 
 @app.route('/xmr/')
 def xmr():
 
     return render_template('./evidence/xmr.html')
+
+#---------------------------------------error 界面---------------------------------#  
+
+@app.errorhandler(404)  
+def error_date(error):  
+    return render_template('./error/404.html'), 404
+
+@app.errorhandler(500)  
+def error_date(error):  
+    return render_template('./error/500.html'), 500
