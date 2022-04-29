@@ -1,17 +1,27 @@
 #coding:UTF-8
 __author__ = 'dj'
 
+<<<<<<< HEAD
 from scapy.all import *
+=======
+from scapy.all import rdpcap, PacketList,corrupt_bytes
+from scapy.layers.inet import IP, TCP, UDP, ICMP
+from scapy.layers.inet6 import IPv6, ICMPv6ND_NS
+from scapy.layers.l2 import ARP
+from scapy.layers.dns import DNS
+>>>>>>> ce3fec71af6bb5ced64734844972d9bd01c9f71e
 import collections
 import time
 
 #时间流量图
-def time_flow(PCAPS):
+def time_flow(PCAPS:PacketList):
     time_flow_dict = collections.OrderedDict()
+<<<<<<< HEAD
     start = PCAPS[0].time
     time_flow_dict[time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(PCAPS[0].time))] = len(corrupt_bytes(PCAPS[0]))
+=======
+>>>>>>> ce3fec71af6bb5ced64734844972d9bd01c9f71e
     for pcap in PCAPS:
-        # timediff = pcap.time - start
         time_flow_dict[time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pcap.time))] = len(corrupt_bytes(pcap))
     return time_flow_dict
 
