@@ -17,14 +17,22 @@
 <body>
     <br>
     <br>
-    <!--协议流量图-->
+    <br>
+    <!--时间流量图-->
     <div class="container" style="height: 400px; width: 90%">
-        <div id="most_ip_pie" style="height: 400px;width: 25%;float:left;"></div>
-        <div id="proto_flow_bar" style="height: 400px;width: 50%;float:left;"></div>
-        <div id="most_warn_count_pie" style="height: 400px;width: 25%;float:left;"></div>
+        <div id="time_flow" style="height: 400px;width: 75%;float:left;"></div>
+    </div>
+    <!--pie-->
+    <div class="container" style="height: 400px; width: 90%">
+        <div id="most_ip_pie" style="height: 400px;width: 50%;float:left;"></div>
+        <div id="most_warn_count_pie" style="height: 400px;width: 50%;float:left;"></div>
     </div>
     <br>
-
+    <br>
+    <!-- box -->
+    <div class="container" style="height: 400px; width: 90%">
+        <div id="most_warn_box" style="height: 400px;width: 100%;float:left;"></div>
+    </div>
     {% autoescape false %}
     <!-- ECharts单文件引入 -->
     <script src="../../static/echarts-2.27/build/dist/echarts.js" type="text/javascript"></script>
@@ -35,20 +43,8 @@
         var async_data = {
             "most_ip_port": [
               {
-                "name": "91.121.140.167:5555", 
+                "name": "111.111.110.167:5555", 
                 "value": 11
-              }, 
-              {
-                "name": "94.23.23.52:5555", 
-                "value": 9
-              }, 
-              {
-                "name": "10.10.22.25:37750", 
-                "value": 2
-              }, 
-              {
-                "name": "10.10.22.25:55828", 
-                "value": 2
               }
             ], 
             "most_warn": [
@@ -59,29 +55,79 @@
               {
                 "name": "\u6076\u610f\u6587\u4ef6\u4e0a\u4f20\u653b\u51fb", 
                 "value": 6
-              }, 
-              {
-                "name": "\u6e90ip\u6355\u83b7:91.121.140.167", 
-                "value": 1
-              }, 
-              {
-                "name": "\u76ee\u7684ip\u6355\u83b7:91.121.140.167", 
-                "value": 1
-              }, 
-              {
-                "name": "\u76ee\u7684ip\u6355\u83b7:94.23.23.52", 
-                "value": 1
-              }, 
-              {
-                "name": "\u6e90ip\u6355\u83b7:94.23.23.52", 
-                "value": 1
               }
-            ]
+            ],
+            'time_flow': [{'name': '2022-02-08 09:46:22', 'value': 1}]
           }
-          
-        
 
     </script>
+
+    <!--时间流量曲线图 async-->
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: '../../static/echarts-2.27/build/dist/'
+            }
+        });
+        var time_flow_Chart;
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                time_flow_Chart = ec.init(document.getElementById('time_flow'));
+            }
+        )
+        var time_flow_option = {
+            title : {
+                text: '时间流量图',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            calculable : false,
+            xAxis : [
+                {
+                    type : 'category',
+                    name : '相对时间',
+                    boundaryGap : true,
+                    data : ['2022-02-08 09:46:22']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    name : '数据包字节',
+                    axisLabel : {
+                        formatter: '{value} byte'
+                    }
+                }
+            ],
+            series : [
+                {
+                    name:'数据包字节',
+                    type:'line',
+                    smooth:true,
+                    symbol: 'none',
+                    itemStyle:{
+                        normal:{
+                            label:{show:true},
+                            color:'#6495ed', //图例颜色设置
+                            },
+                        emphasis:{label:{show:true}}
+                            },
+                    data:async_data["time_flow"]
+                }
+            ]
+        };
+
+    </script>
+
 
     <!--最多出现的 ip_port 饼状图 async-->
     <script type="text/javascript">
@@ -112,7 +158,7 @@
             },
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} KB"
+                formatter: "{a} <br/>{b} : {c} 次"
             },
             calculable: false,
             series: [
@@ -155,7 +201,7 @@
             },
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} KB"
+                formatter: "{a} <br/>{b} : {c} 个"
             },
             calculable: false,
             series: [
@@ -172,6 +218,60 @@
 
     </script>
 
+    <!--流量最多warn统计矩形树图-->
+    <script type="text/javascript">
+        // 路径配置
+        require.config({
+            paths: {
+                echarts: '../../static/echarts-2.27/build/dist/'
+            }
+        });
+        var most_warn_tree_Chart;
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/treemap' 
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                most_warn_tree_Chart = ec.init(document.getElementById('most_warn_box'));
+            }
+        );
+        var most_warn_tree_option = {
+            title: {
+                text: '流量最多warn统计',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} 个"
+            },
+            calculable: false,
+            series: [
+                {
+                    name:'',
+                    type:'treemap',
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                formatter: "{b}"
+                            },
+                            borderWidth: 1
+                        },
+                        emphasis: {
+                            label: {
+                                show: true
+                            }
+                        }
+                    },
+                    data: async_data["most_warn"]
+                }
+            ]
+        };
+    </script>
+
     <!-- api数据读取与异步更新 -->
     <script>
         setInterval(function () {
@@ -179,11 +279,20 @@
                 //flow_async_data 代表读取到的json中的数据
                 async_data = data;
             });
+            var time_flow_keys = [];
+            for(x in async_data["time_flow"]) {
+                
+                time_flow_keys.push(async_data["time_flow"][x]["name"]);
+            }
+            time_flow_option["xAxis"][0]["data"] = time_flow_keys;
+            time_flow_option["series"][0]["data"] = async_data["time_flow"];
+            time_flow_Chart.setOption(time_flow_option);
             most_ip_pie_option.series[0].data = async_data["most_ip_port"];
             most_ip_pie_Chart.setOption(most_ip_pie_option);
             most_warn_count_option.series[0].data = async_data["most_warn"];
             most_warn_count_Chart.setOption(most_warn_count_option);
-
+            most_warn_tree_option.series[0].data = async_data["most_warn"];
+            most_warn_tree_Chart.setOption(most_warn_tree_option)
 
         }, reflash_time);
     </script>

@@ -2,13 +2,14 @@
 
 
 from scapy.all import *
+from scapy.layers.inet import IP, TCP
 from collections import OrderedDict
 import re
 import time
 import binascii
 import base64
 
-def web_data(PCAPS, host_ip):
+def web_data(PCAPS:PacketList, host_ip):
     ip_port_id_list = list()
     id = 0
     for pcap in PCAPS:
@@ -21,20 +22,20 @@ def web_data(PCAPS, host_ip):
                 port = dport
                 if src == host_ip:
                     ip = dst
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id, 'time': pcap.time})
                 elif dst == host_ip:
                     ip = src
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id, 'time': pcap.time})
                 else:
                     pass
             if dst == host_ip:
                 port = sport
                 if src == host_ip:
                     ip = dst
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id, 'time': pcap.time})
                 elif dst == host_ip:
                     ip = src
-                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id})
+                    ip_port_id_list.append({'ip_port':ip+ ':' + str(port) + ':' + 'Stratum', 'id':id, 'time': pcap.time})
                 else:
                     pass
             else:
@@ -61,7 +62,7 @@ def web_data(PCAPS, host_ip):
     return ip_port_data_list
 
 #Mail连接数据POP3 src 110, IMAP src 143,SMTP des 25
-def mail_data(PCAPS, host_ip):
+def mail_data(PCAPS:PacketList, host_ip):
     ip_port_id_list = list()
     id = 0
     for pcap in PCAPS:

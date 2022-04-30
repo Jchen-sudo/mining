@@ -2,6 +2,7 @@
 
 
 from scapy.all import *
+from scapy.layers.inet import IP, TCP, UDP, ICMP
 import time
 from .data_extract import web_data
 from ..utils.proto_analyzer import dns_statistic
@@ -36,7 +37,7 @@ def ip_warning(PCAPS):
     return ip_warning
 
 #dns查询匹配
-def dns_warning(PCAPS): 
+def dns_warning(PCAPS:PacketList): 
     with open('./app/utils/warning/domain.json', 'r', encoding='UTF-8') as f:
         warns = f.readlines()
     warn_list = list()
@@ -46,14 +47,17 @@ def dns_warning(PCAPS):
     dns_dict = dns_statistic(PCAPS)
     for key,value in dns_dict.items():
         if value in warn_list:
-            dns_warning.append({'ip_port':key.decode('utf-8'),'warn':'DNS匹配域名'+value,'time':time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time)),'data':value})
+            dns_warning.append({'ip_port':key.decode('utf-8'),
+                                'warn':'DNS匹配域名'+value,
+                                'time':time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time)), # bug un fix!
+                                'data':value})
     return dns_warning
         
             
 
 
 #特殊字段匹配
-def stratum_warning(PCAPS, host_ip):
+def stratum_warning(PCAPS:PacketList, host_ip):
     with open('./app/utils/warning/HTTP_ATTACK', 'r', encoding='UTF-8') as f:
         attacks = f.readlines()
     ATTACK_DICT = dict()
@@ -73,7 +77,7 @@ def stratum_warning(PCAPS, host_ip):
 
 
 
-def exception_warning(PCAPS, host_ip):
+def exception_warning(PCAPS:PacketList, host_ip):
     warn_list = list()
     ip_list = ip_warning(PCAPS)
     stratum_list = stratum_warning(PCAPS, host_ip)
