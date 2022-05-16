@@ -1,0 +1,7 @@
+Flask==2.0.3
+Flask_WTF==1.0.1
+geoip2==4.5.0
+requests==2.27.1
+scapy==2.4.3
+SQLAlchemy==1.1.3
+WTForms==3.0.1
