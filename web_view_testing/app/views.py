@@ -38,10 +38,26 @@ def pcap_cut(t: int) -> PacketList:
             p = rdpcap(filePath) + p # 保持时间顺序
     assert p.__len__() > 0
     return p
-    
+
+
+#--------------------------- 口令认证 ---------------------------------#
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
+auth = HTTPBasicAuth()
+users = {
+    "admin": generate_password_hash("123456"),
+    "user": generate_password_hash("88888888")
+}
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
+     
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/index/', methods=['POST', 'GET'])
+@auth.login_required
 def index():
     return render_template('./home/index.html')
     
