@@ -71,7 +71,7 @@
 				<li>
 					<br />
 				</li>
-				<li class="start active ">
+				<li class="start active">
 					<a href="{{url_for('flow_async')}}" target="main-content">
 						<i class="icon-home"></i>
 						<span class="title">实时流量信息</span>
@@ -83,6 +83,7 @@
 						<i class="icon-bar-chart"></i>
 						<span class="title">在线流量分析</span>
 						<span class="arrow "></span>
+						<span class="selected"></span>
 					</a>
 					<ul class="sub-menu">
 						<li>
@@ -112,6 +113,7 @@
 						<i class="icon-eye-open"></i>
 						<span class="title">离线数据包分析</span>
 						<span class="arrow "></span>
+						<span class="selected"></span>
 					</a>
 					<ul class="sub-menu">
 						<li>
@@ -147,6 +149,7 @@
 						<i class="icon-warning-sign"></i>
 						<span class="title">异常信息</span>
 						<span class="arrow "></span>
+						<span class="selected"></span>
 					</a>
 					<ul class="sub-menu">
 						<li>
@@ -171,6 +174,7 @@
 						<i class="icon-download-alt"></i>
 						<span class="title">证据提取</span>
 						<span class="arrow "></span>
+						<span class="selected"></span>
 					</a>
 					<ul class="sub-menu">
 						<li>
@@ -243,6 +247,13 @@
 			//Index.init();
 
 		});
+		// 高亮选中内容
+        $(document).ready(function() {
+            $('li').click(function() {
+                $('li.active').removeClass("start active");
+                $(this).addClass("start active");
+            });
+        });
 	</script>
 	<!-- END JAVASCRIPTS -->
 	<script type="text/javascript">
@@ -255,6 +266,7 @@
 		}
 		document.getElementsByClassName("page-content").onresize = iframechange();
 	</script>
+	
 </body>
 <!-- END BODY -->
 
