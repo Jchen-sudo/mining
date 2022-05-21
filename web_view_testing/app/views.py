@@ -43,15 +43,17 @@ def pcap_cut(t: int) -> PacketList:
 #--------------------------- 口令认证 ---------------------------------#
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
+from gmssl.sm3 import sm3_hash,bytes_to_list
+sm3_hash_str = lambda x: sm3_hash(bytes_to_list(x.encode('utf8')))
 auth = HTTPBasicAuth()
 users = {
-    "admin": generate_password_hash("123456"),
-    "user": generate_password_hash("88888888")
+    "admin": generate_password_hash(sm3_hash_str("123456")),
+    "user": generate_password_hash(sm3_hash_str("88888888"))
 }
 @auth.verify_password
 def verify_password(username, password):
     if username in users and \
-            check_password_hash(users.get(username), password):
+            check_password_hash(users.get(username), sm3_hash_str(password)):
         return username
      
 
