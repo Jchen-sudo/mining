@@ -14,7 +14,7 @@ Page header
   filter: none !important;
 /*   background-image: none !important; */
 /* background-color: #000000 !important; */
-  background-image: linear-gradient(to right,#00daff, #7016ff,#7801c3);
+  background-image: linear-gradient(to right,#0065ff, #7016ff,#7801c3);
 }
 .header .btn-navbar {
   background-color: #212121 !important;
@@ -40,17 +40,17 @@ ul.page-sidebar-menu > li:last-child > a {
   border-bottom: 1px solid transparent !important;
 }
 ul.page-sidebar-menu > li a i {
-  color: #32c4dc;
+  color: #ffffff;
 }
 ul.page-sidebar-menu > li.open > a,
 ul.page-sidebar-menu > li > a:hover,
 ul.page-sidebar-menu > li:hover > a {
-  background: #0084c2;
+  background: #2153ff;
 }
 ul.page-sidebar-menu > li.active > a {
-  background: #09b9ff !important;
-  border-top-color: transparent !important;
-  color: #ffffff;
+  background: #214fff !important;
+  border-top-color: #682d2d00 !important;
+  color: #ffffff !important;
 }
 ul.page-sidebar-menu > li.active > a i {
   color: #ffffff;
@@ -64,7 +64,7 @@ ul.page-sidebar-menu > li > ul.sub-menu > li > a:hover {
   background: #575757 !important;
 }
 ul.page-sidebar-menu > li > ul.sub-menu > li > a:hover {
-  background: #1d88bb !important;
+  background: #173299 !important;
 }
 /* 3rd level sub menu */
 ul.page-sidebar-menu > li > ul.sub-menu li > ul.sub-menu > li.active > a,
