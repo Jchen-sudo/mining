@@ -1,0 +1,10 @@
+
+============================
+Generate Regex on dataset
+dataset size: 214
+Iteration: 10
+Cost time: 0.810833215713501
+Regex length: 112
+Correct rate: 1.000
+{"id":(.*)(.{4}\d{2}"}}|\w[a-z]\d{2}.\d{4}.[a-z]{2}\d{2}.[a-z]\d[a-z]{2}\d{6}[a-z]\d","job_id":"\w(.*)|\d{4}"}})
+============================
