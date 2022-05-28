@@ -5,7 +5,7 @@
 	<meta charset="utf-8" />
 	<title>online Analyzer</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta content="" name="description" />
+	<meta content="挖矿流量检测系统" name="description" />
 	<meta content="" name="author" />
 
 	<link href="../../static/media/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -26,7 +26,7 @@
 	<style>
 		.main-content {
 			margin-top: 0;
-			min-height: 850px;
+			min-height: 900px;
 			width: 100%;
 			border: 0px;
 		}
@@ -42,7 +42,7 @@
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="{{url_for('index')}}">
 					
-				   	<img src="../../static/media/image/MG-vis/logo_yellow.png" class="img-responsive" alt="logo"  width="190" />
+				   	<img src="../../static/media/image/MG-vis/logo_black.png" class="img-responsive" alt="logo"  width="185" />
 				</a>
 				<!-- END LOGO -->
 				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -212,12 +212,13 @@
 		</div>
 		<!-- END PAGE -->
 	</div>
-	·
+	
 	<!-- END CONTAINER -->
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
 		<div class="footer-inner">
-			版权所有 侵权必究
+			<p>版权所有 侵权必究</p>
+			<p>MininGoven &copy; 2022</p>
 		</div>
 
 	</div>
@@ -240,7 +241,7 @@
 	<script src="../../static/media/js/app.js" type="text/javascript"></script>
 	<script src="../../static/media/js/index.js" type="text/javascript"></script>
 	<!-- END PAGE LEVEL SCRIPTS -->
-	<script>
+	<script type="text/javascript">
 		jQuery(document).ready(function () {
 			App.init(); // initlayout and core plugins
 			//Index.init();
@@ -253,9 +254,7 @@
                 $(this).addClass("start active");
             });
         });
-	</script>
-	<!-- END JAVASCRIPTS -->
-	<script type="text/javascript">
+		
 		function iframechange() {
 			var width = document.getElementsByClassName("page-content").width();
 			var height = document.getElementsByClassName("page-content").height();
@@ -265,6 +264,7 @@
 		}
 		document.getElementsByClassName("page-content").onresize = iframechange();
 	</script>
+	<!-- END JAVASCRIPTS -->
 	
 </body>
 <!-- END BODY -->
