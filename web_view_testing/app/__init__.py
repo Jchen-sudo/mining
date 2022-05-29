@@ -20,5 +20,3 @@ class sniff_Process(Process):
         sniff_main()
         print('sniff_Process exit')
 
-p = sniff_Process() #实例化进程对象
-p.start()
