@@ -58,8 +58,12 @@ def verify_password(username, password):
      
 
 @app.route('/', methods=['POST', 'GET'])
-@app.route('/index/', methods=['POST', 'GET'])
+@app.route('/login/', methods=['POST', 'GET'])
 @auth.login_required
+def login():
+    return render_template('./home/login.html')
+
+@app.route('/index/', methods=['POST', 'GET'])
 def index():
     return render_template('./home/index.html')
     

@@ -16,7 +16,7 @@ Page header
   background-image: linear-gradient(to right, #0b6dff6e, #a09fff8f, #c658ff8c) !important;
   background-color: #ffffff00 !important;
   backdrop-filter: blur(20px);
-
+  
 }
 .header .brand {
   padding: 0px;
@@ -31,7 +31,7 @@ Page header
   object-fit:cover;
 }
 .header .btn-navbar {
-  background-color: #000000 !important;
+  background-color: #805699 !important; /*手机版memu=*/
 }
 
 .header .nav .dropdown-toggle:hover,
@@ -50,27 +50,35 @@ Page sidebar
   background-color: #ddd;
 }
 
+/* ul.page-sidebar-menu>li{
+  background: #ddd;
+}
+ */
 ul.page-sidebar-menu>li>a {
   border-top: 1px solid #ccc !important;
-  color: #817474 !important;
+  color: #777 !important;
+  transition: 0.2s;
 }
 
 ul.page-sidebar-menu>li:last-child>a {
   border-bottom: 1px solid transparent !important;
+  
 }
 
 ul.page-sidebar-menu>li a i {
-  color: #000000;
+  color: #000000; /* 按钮颜色 */
+  
 }
 
 ul.page-sidebar-menu>li.open>a,
 ul.page-sidebar-menu>li>a:hover,
 ul.page-sidebar-menu>li:hover>a {
-  background: #a2c5ff78;
+  background: #84b2f1;
+
 }
 
 ul.page-sidebar-menu>li.active>a {
-  background: #7db1ff !important;
+  background: #83b2f1 !important;
   border-top-color: #682d2d00 !important;
   color: #000000 !important;
 }
@@ -87,6 +95,7 @@ ul.page-sidebar-menu>li>ul.sub-menu>li.active>a,
 ul.page-sidebar-menu>li>ul.sub-menu>li>a:hover {
   color: #ffffff !important;
   background: #575757 !important;
+  transition: 0.4s;
 }
 
 ul.page-sidebar-menu>li>ul.sub-menu>li>a:hover {
@@ -104,6 +113,7 @@ ul.page-sidebar-menu>li>ul.sub-menu li.open>a {
 /* font color for all sub menu links*/
 ul.page-sidebar-menu li>ul.sub-menu>li>a {
   color: #777;
+  background: #ddd
 }
 
 /* menu arrows */
@@ -230,7 +240,7 @@ Footer
 .footer {
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(20px);
-  padding-bottom: 80px !important;
+  padding-bottom: 57px !important;
   text-align: center !important;
 
   position: fixed;
