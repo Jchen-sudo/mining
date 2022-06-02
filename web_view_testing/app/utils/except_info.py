@@ -56,7 +56,7 @@ def dns_warning(PCAPS:PacketList):
             
 
 
-#特殊字段匹配
+#报文字段匹配
 def stratum_warning(PCAPS:PacketList, host_ip):
     with open('./app/utils/warning/HTTP_ATTACK', 'r', encoding='UTF-8') as f:
         attacks = f.readlines()
@@ -69,7 +69,7 @@ def stratum_warning(PCAPS:PacketList, host_ip):
 
     for web in webdata:
         data = web['data']
-        for pattn, attk in ATTACK_DICT.items(): #特征码和攻击名称
+        for pattn, attk in ATTACK_DICT.items(): 
             if pattn.upper() in data.upper():
                 webwarn_list.append({'ip_port': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 'warn':attk, 'time':pattn, 'data':data})
    
