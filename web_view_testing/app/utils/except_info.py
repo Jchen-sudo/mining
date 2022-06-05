@@ -105,8 +105,8 @@ def machine_learning_warning(PCAP_NAME):
     miningFlows =  miningFlows.iloc[:, featureColumns]
     ml_warnlist=list()
     for num in  mlmodel.predict(miningFlows.values):
-        info+=1
         if num == 1:
-            ml_warnlist.append ( {'ip_port':infoFlows[info][0]+infoFlows[info][1], 'warn': 'RF模型匹配', 'time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time)), 'data':'加密挖矿流量'})
+            ml_warnlist.append ({'ip_port':infoFlows.src_ip[info]+':'+str(infoFlows.src_port[info]), 'warn': 'RF模型匹配', 'time':'', 'data':'加密挖矿流量'})
+            info+=1
     return  ml_warnlist
 
