@@ -29,4 +29,4 @@ https://docs.qq.com/doc/DT3hMSmhOZ2lkanpQ
 
 ## Logo
 
-![](README/vis_all.png)
+![](vis/vis_all.png)
