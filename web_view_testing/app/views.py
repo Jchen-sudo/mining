@@ -10,7 +10,7 @@ from .utils.proto_analyzer import common_proto_statistic, pcap_len_statistic, ht
 from .utils.flow_analyzer import time_flow, data_flow, get_host_ip, data_in_out_ip, proto_flow, most_flow_statistic
 from .utils.ipmap_tools import getmyip, get_ipmap, get_geo
 from .utils.data_extract import web_data, telnet_ftp_data, mail_data, sen_data, client_info
-from .utils.except_info import exception_warning
+from .utils.except_info import exception_warning, machine_learning_warning
 from .utils.file_extract import web_file, ftp_file, mail_file, all_files
 from scapy.all import rdpcap, PacketList
 import os
@@ -366,3 +366,23 @@ def error_date(error):
 @app.errorhandler(500)  
 def error_date(error):  
     return render_template('./error/500.html'), 500
+
+
+
+#---------------------------------------离线/模型匹配---------------------------------#   
+@app.route('/mlinfo/', methods=['POST', 'GET'])
+def mlinfo():
+    if PCAPS == None:
+        flash("请先上传要分析的数据包!")
+        return redirect(url_for('upload'))
+    else:
+        dataid = request.args.get('id')
+        host_ip = get_host_ip(PCAPS)
+        warning_list = machine_learning_warning(PCAP_NAME)
+        if dataid:
+            if warning_list[int(dataid)-1]['data']:
+                return warning_list[int(dataid)-1]['data'].replace('\r\n', '<br>')
+            else:
+                return '<center><h3>无相关数据包详情</h3></center>'
+        else:
+            return render_template('./exceptions/exception.html', warning=warning_list)

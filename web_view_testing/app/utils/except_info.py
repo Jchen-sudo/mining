@@ -1,11 +1,15 @@
 #coding:UTF-8
 
 
+from distutils.log import info
 from scapy.all import *
 from scapy.layers.inet import IP, TCP, UDP, ICMP
 import time
 from .data_extract import web_data
 from ..utils.proto_analyzer import dns_statistic
+from nfstream import NFStreamer
+import joblib
+
 
 
 #ioc匹配ip地址
@@ -89,3 +93,20 @@ def exception_warning(PCAPS:PacketList, host_ip):
     if dns_list:
         warn_list.append(dns_list)
     return warn_list
+
+#机器学习模型匹配
+def machine_learning_warning(PCAP_NAME):
+    mlmodel = joblib.load('RF.joblib')
+    featureColumns=[21, 26, 50, 16, 66, 52, 74, 42, 23, 44, 51, 33, 48, 58, 73, 57, 47, 65, 28, 43, 39, 18, 30, 32, 22, 9, 31, 17, 27, 36, 38, 34, 46, 60, 49]
+    info=0
+    miningFlows = NFStreamer(source=PCAP_NAME, statistical_analysis=True).to_pandas()
+    infoColumns = [2,5,6]
+    infoFlows =  miningFlows.iloc[:, infoColumns]
+    miningFlows =  miningFlows.iloc[:, featureColumns]
+    ml_warnlist=list()
+    for num in  mlmodel.predict(miningFlows.values):
+        info+=1
+        if num == 1:
+            ml_warnlist.append ( {'ip_port':infoFlows[info][0]+infoFlows[info][1], 'warn': 'RF模型匹配', 'time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time)), 'data':'加密挖矿流量'})
+    return  ml_warnlist
+
