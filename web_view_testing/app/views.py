@@ -59,8 +59,13 @@ def verify_password(username, password):
 
 @app.route('/', methods=['POST', 'GET'])
 @app.route('/login/', methods=['POST', 'GET'])
-@auth.login_required
 def login():
+    if request.method == 'POST':
+        if verify_password(request.form.get('username'), request.form.get("password") ):
+            return render_template('./home/index.html')
+        else:
+            error = 'Invalid username/password'
+            return render_template('./home/login.html',error = error)
     return render_template('./home/login.html')
 
 @app.route('/index/', methods=['POST', 'GET'])
