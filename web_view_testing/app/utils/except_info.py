@@ -1,6 +1,3 @@
-#coding:UTF-8
-
-
 from distutils.log import info
 from scapy.all import *
 from scapy.layers.inet import IP, TCP, UDP, ICMP
@@ -9,7 +6,6 @@ from .data_extract import web_data
 from ..utils.proto_analyzer import dns_statistic
 from nfstream import NFStreamer
 import joblib
-
 
 
 #ioc匹配ip地址
@@ -40,7 +36,7 @@ def ip_warning(PCAPS):
  
     return ip_warning
 
-#dns查询匹配
+# dns查询匹配
 def dns_warning(PCAPS:PacketList): 
     with open('./app/utils/warning/domain.json', 'r', encoding='UTF-8') as f:
         warns = f.readlines()
@@ -60,7 +56,7 @@ def dns_warning(PCAPS:PacketList):
             
 
 
-#报文字段匹配
+# 报文字段匹配
 def stratum_warning(PCAPS:PacketList, host_ip):
     with open('./app/utils/warning/HTTP_ATTACK', 'r', encoding='UTF-8') as f:
         attacks = f.readlines()
@@ -75,38 +71,64 @@ def stratum_warning(PCAPS:PacketList, host_ip):
         data = web['data']
         for pattn, attk in ATTACK_DICT.items(): 
             if pattn.upper() in data.upper():
-                webwarn_list.append({'ip_port': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 'warn':attk, 'time':pattn, 'data':data})
+                webwarn_list.append({'ip_port': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 
+                                     'warn':attk, 
+                                     'time':pattn, 
+                                     'data':data})
    
     return webwarn_list
 
+# 匹配 login 时挖矿地址
+import re
+def login_addr_warning(PCAPS:PacketList, host_ip):
+    webdata = web_data(PCAPS, host_ip)
+    webwarn_list = list()
 
+    for web in webdata:
+        data : str = web['data'] 
+        m = re.search('(?<="login":")([A-z0-9]+?)(?=")',data)
+        if m:
+            webwarn_list.append({'ip_port': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 
+                                    'warn':'挖矿地址探查', 
+                                    'time': m.group(0),
+                                    'data': data
+                                })
+   
+    return webwarn_list    
 
 def exception_warning(PCAPS:PacketList, host_ip):
     warn_list = list()
     ip_list = ip_warning(PCAPS)
     stratum_list = stratum_warning(PCAPS, host_ip)
     dns_list = dns_warning(PCAPS)
+    login_addr_list = login_addr_warning(PCAPS, host_ip)
     if ip_list:
         warn_list.extend(ip_list)
     if stratum_list:
         warn_list.extend(stratum_list)
     if dns_list:
         warn_list.append(dns_list)
+    if login_addr_list:
+        warn_list.extend(login_addr_list)
     return warn_list
 
-#机器学习模型匹配
+# 机器学习模型匹配
+MLMODEL_RL = joblib.load('RF.joblib')
+FEATURE_COLUMNS_RL=[21, 26, 50, 16, 66, 52, 74, 42, 23, 44, 51, 33, 48, 58, 73, 57, 47, 65, 28, 43, 39, 18, 30, 32, 22, 9, 31, 17, 27, 36, 38, 34, 46, 60, 49]
 def machine_learning_warning(PCAP_NAME):
-    mlmodel = joblib.load('RF.joblib')
-    featureColumns=[21, 26, 50, 16, 66, 52, 74, 42, 23, 44, 51, 33, 48, 58, 73, 57, 47, 65, 28, 43, 39, 18, 30, 32, 22, 9, 31, 17, 27, 36, 38, 34, 46, 60, 49]
-    info=0
-    miningFlows = NFStreamer(source=PCAP_NAME, statistical_analysis=True).to_pandas()
-    infoColumns = [2,5,6,14]
-    infoFlows =  miningFlows.iloc[:, infoColumns]
-    miningFlows =  miningFlows.iloc[:, featureColumns]
-    ml_warnlist=list()
-    for num in  mlmodel.predict(miningFlows.values):
+    info = 0
+    miningFlows = NFStreamer(
+        source=PCAP_NAME, statistical_analysis=True).to_pandas()
+    infoColumns = [2, 5, 6, 14]
+    infoFlows = miningFlows.iloc[:, infoColumns]
+    miningFlows = miningFlows.iloc[:, FEATURE_COLUMNS_RL]
+    ml_warnlist = list()
+    for num in MLMODEL_RL.predict(miningFlows.values):
         if num == 1:
-            ml_warnlist.append ({'ip_port':infoFlows.src_ip[info]+':'+str(infoFlows.src_port[info]), 'warn': 'RF模型匹配', 'time':infoFlows.bidirectional_first_seen_ms[info], 'data':'加密挖矿流量'})
-            info+=1
-    return  ml_warnlist
+            ml_warnlist.append({'ip_port': infoFlows.src_ip[info]+':'+str(infoFlows.src_port[info]),
+                               'warn': 'RF模型匹配', 'time': time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(infoFlows.bidirectional_first_seen_ms[info])/1000)), 
+                               'data': '加密挖矿流量'})
+            info += 1
+    return ml_warnlist
+
 
