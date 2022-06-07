@@ -23,14 +23,7 @@
 	<link href="../../static/media/css/jqvmap.css" rel="stylesheet" type="text/css" media="screen" />
 	<link href="../../static/media/css/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen" />
 	<link rel="shortcut icon" href="../../static/media/image/favicon.ico" />
-	<!-- <style>
-		.main-content {
-			margin-top: 0;
-			min-height: 900px;
-			width: 100%;
-			border: 0px;
-		}
-	</style> -->
+
 </head>
 
 <body class="page-header-fixed">
@@ -70,12 +63,13 @@
 				<li>
 					<br />
 				</li>
-				<li class="start active">
+				<li class="open start active">
 					<a href="{{url_for('flow_async')}}" target="main-content">
 						<i class="icon-home"></i>
 						<span class="title">实时流量信息</span>
 						<span class="selected"></span>
 					</a>
+					<ul class="sub-menu"></ul>
 				</li>
 				<li class="">
 					<a href="javascript:;">
@@ -182,12 +176,12 @@
 							</a>
 						</li>
 						<li>
-							<a href="{{ url_for('flow') }}" target="main-content">
+							<a href="{{ url_for('wallet_analysis') }}" target="main-content">
 								钱包地址分析
 							</a>
 						</li>
 						<li>
-							<a href="{{ url_for('xmr') }}" target="main-content">
+							<a href="{{ url_for('wallet_analysis') }}" target="main-content">
 								矿池跟踪
 							</a>
 						</li>
@@ -205,8 +199,6 @@
 		<!-- END SIDEBAR -->
 		<!-- BEGIN PAGE  内嵌流量分析渲染前端页面 -->
 		<div class="page-content" id="div-content">
-			<!-- <a class="main-content" name="main-content" scrolling="auto">实时流量可视化图表</a> -->
-			<!-- <iframe class="main-content" src="../../xmr.html" name="main-content" scrolling="auto"></iframe> -->
 			<iframe class="main-content" id="flow_reflash" src="{{ url_for('flow_async') }}" name="main-content"
 				scrolling="auto"></iframe>
 		</div>
@@ -239,21 +231,12 @@
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
 	<script src="../../static/media/js/app.js" type="text/javascript"></script>
-	<script src="../../static/media/js/index.js" type="text/javascript"></script>
+	<!-- <script src="../../static/media/js/index.js" type="text/javascript"></script> -->
 	<!-- END PAGE LEVEL SCRIPTS -->
 	<script type="text/javascript">
 		jQuery(document).ready(function () {
 			App.init(); // initlayout and core plugins
-			//Index.init();
-
 		});
-		// 高亮选中内容
-        $(document).ready(function() {
-            $('li').click(function() {
-                $('li.active').removeClass("start active");
-                $(this).addClass("start active");
-            });
-        });
 		
 		function iframechange() {
 			var width = document.getElementsByClassName("page-content").width();

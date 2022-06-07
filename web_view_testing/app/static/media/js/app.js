@@ -167,7 +167,7 @@ var App = function () {
 
                 parent.children('li.open').children('a').children('.arrow').removeClass('open');
                 parent.children('li.open').children('.sub-menu').slideUp(200);
-                parent.children('li.open').removeClass('open');
+                parent.children('li.open').removeClass('open active');
 
                 var sub = jQuery(this).next();
                 if (sub.is(":visible")) {
@@ -178,7 +178,7 @@ var App = function () {
                         });
                 } else {
                     jQuery('.arrow', jQuery(this)).addClass("open");
-                    jQuery(this).parent().addClass("open");
+                    jQuery(this).parent().addClass(" active open");
                     sub.slideDown(200, function () {
                             handleSidebarAndContentHeight();
                         });

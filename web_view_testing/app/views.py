@@ -386,3 +386,9 @@ def mlinfo():
                 return '<center><h3>无相关数据包详情</h3></center>'
         else:
             return render_template('./exceptions/exception.html', warning=warning_list)
+        
+#---------------------------------------钱包地址分析---------------------------------#   
+
+@app.route('/walletanalysis/')
+def wallet_analysis():    
+    return render_template('./evidence/walletanalysis.html', webdata=[])

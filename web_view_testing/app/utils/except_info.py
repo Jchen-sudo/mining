@@ -90,7 +90,7 @@ def login_addr_warning(PCAPS:PacketList, host_ip):
         if m:
             webwarn_list.append({'ip_port': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 
                                     'warn':'挖矿地址探查', 
-                                    'time': m.group(0),
+                                    'time': m.group(),
                                     'data': data
                                 })
    

@@ -18,7 +18,7 @@ body {
 } */
 .main-content {
   margin-top: 0;
-  min-height: calc(100vh - 42px - 25px); /* - 57px */
+  min-height: calc(100vh - 42px - 57px); /* - 57px */
   width: 100%;
   border: 0px;
   overflow:visible;
