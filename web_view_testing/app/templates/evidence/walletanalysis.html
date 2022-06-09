@@ -29,13 +29,33 @@
             min-height: calc(100vh);
             overflow: visible;
         }
+        .alert {
+            display: inline-block; 
+            margin: 0px auto; 
+            position: fixed; 
+            transition: 0.5s; 
+            z-index: 10800; 
+            top: 20px; right: 20px; 
+            animation-iteration-count: 1; 
+            animation-timing-function: ease-in-out; 
+            animation-fill-mode: forwards; 
+            animation-duration: 0.5s;
+            word-wrap: break-word;
+            opacity: 0.5; 
+        }
+        .alert:hover {
+            opacity: 1;
+        }
+
     </style>
 
 </head>
 
 <body>
-
-
+    <!-- 警告框 -->
+    <div class="col-xs-11 col-sm-4 alert alert-success animated fadeInUp hide"  role="alert">
+        <strong>嘿嘿嘿</strong>
+    </div>
 
     <div class="container">
         <h2 class="text-center">钱包地址分析</h2>
@@ -50,20 +70,16 @@
             <thead>
                 <tr>
                     <th class="text-center">序号</th>
-                    <th class="text-center">连接</th>
                     <th class="text-center">IP</th>
-                    <th class="text-center">地址</th>
+                    <th class="text-center">钱包地址</th>
                 </tr>
             </thead>
             <tbody>
                 {% for web in webdata %}
                 <tr data-toggle="modal" data-target="#myModal">
                     <th scope="row" class="text-center" id="id">{{ web['data_id'] }}</th>
-                    <td class="text-nowrap text-center">{{ web['ip_port'].split(':')[0] }}:{{
-                        web['ip_port'].split(':')[1] }}</td>
-                    <td class="text-nowrap text-center">HTTP</td>
-                    <td class="text-left text-nowrap">{{ web['data'][:100] }}</td>
-                    <td class="text-center">{{ web['lens'] }}KB</td>
+                    <td class="text-nowrap text-center">{{ web['data_IP'] }}</td>
+                    <td class="text-left text-nowrap">{{ web['data_wallet'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -79,19 +95,24 @@
     <br>
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#common"  data-toggle="tab">通用查询</a></li>
-        <li class=""><a href="#XMR"  data-toggle="tab">门罗币</a></li>
+        <li class=""><a href="#common"  data-toggle="tab">通用查询</a></li>
+        <li class=""><a href="#whatcoin"  data-toggle="tab">数字钱包地址种类识别</a></li>
+        <li class="active"><a href="#XMR"  data-toggle="tab">门罗币</a></li>
         <li class=""><a href="#BTC"  data-toggle="tab">比特币</a></li>
         <li class=""><a href="#ETH"  data-toggle="tab">以太坊</a></li>
         <li class=""><a href="#DOGE"  data-toggle="tab">狗狗币</a></li>
     </ul>
 
     <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade in active" id="common">
+        <div class="tab-pane fade" id="common">
             <p>common</p>
             <iframe src="https://www.bing.com/" ></iframe>
         </div>
-        <div class="tab-pane fade" id="XMR">
+        <div class="tab-pane fade" id="whatcoin">
+            <p>whatcoin</p>
+            <iframe src="https://www.2weima.com/wallet_address.html" ></iframe>
+        </div>
+        <div class="tab-pane fade in active" id="XMR">
             <p>XMR</p>
             <iframe src="https://xmrchain.net/" ></iframe>
         </div>
@@ -110,23 +131,40 @@
 
     <!--table点击事件-->
     <script>
-        jQuery(document).ready(function () {
-			App.init(); // initlayout and core plugins
-		});
-		// 高亮选中内容
-        $(document).ready(function() {
-            $('li').click(function() {
-                $('li.active').removeClass("active");
-                $(this).addClass("active");
+        function copy(a) {
+            let transfer = document.createElement('input');
+            document.body.appendChild(transfer);
+            transfer.value = a;  // 这里表示想要复制的内容
+            transfer.focus();
+            transfer.select();
+            if (document.execCommand('copy')) {
+                document.execCommand('copy');
+            }
+            transfer.blur();
+            $('.alert > strong').text("已复制钱包地址：【"+a+"】到您的剪贴板\n点击相应币种可自动查询");
+            $('.alert').removeClass('hide');
+            $('.alert').addClass('in');
+            document.body.removeChild(transfer);
+            // 隐藏警告框
+            $('.alert').on('click', function() {
+                $('.alert').removeClass('in');
+                $('.alert').addClass('hide');
             });
-        });
-
-        $(function () {
+            setTimeout(function() {
+                $('.alert').removeClass('in');
+                $('.alert').addClass('hide');
+            }, 3000);
+            
+        }
+        $(function () { 
             $("table > tbody > tr").click(function () {
-                var id = $(this).children('th').eq(0).text();
-                alert(id);
+                var addr = $(this).children('td').eq(1).text();
+                copy(addr);
+                //更改iframe的src
+                $("#XMR").children('iframe').attr('src', 'https://xmrchain.net/search?value='+addr);
             });
         })
+        
     </script>
 
 

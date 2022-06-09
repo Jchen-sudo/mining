@@ -23,15 +23,20 @@
             align-items: center;
             justify-content: center;
         }
+
         .login_box {
             width: 400px;
             height: 400px;
-            background-color: rgba(255, 255, 255, 0.125);
+            background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             
             margin-top: 150px;
             
             border-radius: 20px;
+
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
         }
         .title {
             text-align: center;
@@ -63,11 +68,13 @@
             font-size: 15px;
         }
         .input_box {
-            opacity: 0.4;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255,0.5);
+            border-right: 1px solid rgba(255, 255, 255,0.5);
         }
         .button_box {
             margin-top: 30px;
-            background-color: #0091f1;
+            background-color: #45b5ff81;
             cursor: pointer;
             color: rgb(255, 255, 255);
             border: 0px;
@@ -95,7 +102,24 @@
             <p class="error-message">{{ error }}</h1>
         {% endif %}
     </form>
-
-	
+    <!-- <script src="../../static/media/js/jquery-1.10.1.min.js"></script> -->
+    <script src="../../static/media/js/vanilla-tilt.js"></script>
+    <script src="../../static/media/js/jquery.particleground.js"></script>
+	<script>
+        //$(document).ready(function() {
+        //    $('#particles').particleground({
+        //      dotColor: '#5cbdaa',
+        //      lineColor: '#5cbdaa'
+        //    });
+        //});
+        VanillaTilt.init(document.querySelectorAll(".login_box"), {
+            max: 3,
+            speed: 400, 
+            glare: true,
+            "max-glare": 0.15,
+            reverse:                true,  // reverse the tilt direction
+            "full-page-listening":  true,  // If true, parallax effect will listen to mouse move events on the whole document, not only the selected element
+        });
+    </script>
 </body>
 </html>

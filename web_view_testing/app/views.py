@@ -391,4 +391,23 @@ def mlinfo():
 
 @app.route('/walletanalysis/')
 def wallet_analysis():    
-    return render_template('./evidence/walletanalysis.html', webdata=[])
+    data = [{
+        "data_id": 1,
+        "data_IP": "1.2.3.4",
+        "data_wallet": "45UNGwUMKR7AKWQK8xNWMu6sjKP4AgAhAHatGY9RgDsY3D9uHAoKpamXF3zSp8pQW9jKFS27pvfQoH5xyUb8oPMq8aS4UZf",
+    }]
+    return render_template('./evidence/walletanalysis.html', webdata=data)
+
+
+#---------------------------------------矿池跟踪---------------------------------#   
+
+@app.route('/miningpool/')
+def miningpool():    
+    return render_template('./evidence/miningpool.html')
+
+
+#--------------------------------------- 原始流量转储 ---------------------------------#   
+
+@app.route('/flowdownload/')
+def flowdownload():    
+    return render_template('./evidence/flowdownload.html')
