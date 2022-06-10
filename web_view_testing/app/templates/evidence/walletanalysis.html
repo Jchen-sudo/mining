@@ -145,11 +145,6 @@
             $('.alert').removeClass('hide');
             $('.alert').addClass('in');
             document.body.removeChild(transfer);
-            // 隐藏警告框
-            $('.alert').on('click', function() {
-                $('.alert').removeClass('in');
-                $('.alert').addClass('hide');
-            });
             setTimeout(function() {
                 $('.alert').removeClass('in');
                 $('.alert').addClass('hide');

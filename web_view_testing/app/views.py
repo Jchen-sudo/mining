@@ -228,6 +228,26 @@ def upload():
                 return render_template('./upload/upload.html')
         else:
             return render_template('./upload/upload.html')
+        
+#---------------------------数据包下载---------------------------------#
+from flask import send_from_directory
+@app.route("/download/")
+def download():
+    # 读取目录下的文件
+    file_list = os.listdir(r"./database/pcaps/")
+    
+    return render_template('./upload/download.html',file_list=file_list)
+
+
+@app.route("/download/file/",methods=['GET','POST'])
+def download_file():
+    if request.method == 'GET':
+        filename = request.args.get('filename')
+        print(filename)
+        path = os.path.join(os.getcwd(), 'database/pcaps/')
+        return send_from_directory(path, filename, as_attachment=True)
+    # return send_from_directory(r"../database/",filename=filename,as_attachment=True)
+
 
 #---------------------------离线分析/基本信息---------------------------------#
 @app.route('/database/', methods=['GET', 'POST'])
