@@ -87,7 +87,7 @@
         {
             "algo": null,
             "coin": null,
-            "url": "pool.xmrpool.me:9000",
+            "url": "xmr.crypto-pool.fr:8443",
             "user": "45UNGwUMKR7AKWQK8xNWMu6sjKP4AgAhAHatGY9RgDsY3D9uHAoKpamXF3zSp8pQW9jKFS27pvfQoH5xyUb8oPMq8aS4UZf",
             "pass": "x",
             "rig-id": null,
