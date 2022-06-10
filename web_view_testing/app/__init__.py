@@ -20,5 +20,8 @@ class sniff_Process(Process):
         sniff_main()
         print('sniff_Process exit')
 
-p = sniff_Process() #实例化进程对象
-p.start()
+sniff_p = sniff_Process() #实例化进程对象
+try:
+    sniff_p.start()
+except:
+    print('sniff_Process(in __init__) error, plase `HAVEN_NO_SNIFF = True` in run.py')
