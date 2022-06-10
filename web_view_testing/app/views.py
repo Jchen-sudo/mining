@@ -22,6 +22,7 @@ app.jinja_env.globals['enumerate'] = enumerate
 PD = PcapDecode()  # 解析器
 filepath = './database/'
 PCAP_NAME = '2K.pcap'
+pcap_name = '2K.pcap'
 ONPCAPS = None
 PCAPS = rdpcap(os.path.join(filepath, PCAP_NAME)) 
 # ONPCAPS = rdpcap(os.path.join(filepath, ONPCAPS_NAME))
@@ -233,9 +234,10 @@ def upload():
 from flask import send_from_directory
 @app.route("/download/")
 def download():
-    # 读取目录下的文件
-    file_list = os.listdir(r"./database/pcaps/")
-    
+    # 读取在线流量抓取目录下的文件
+    online_list = os.listdir(r"./database/pcaps/")
+    file_list = []
+    file_list.extend([{"id":i,"from":"在线流量抓取","name":n} for i,n in enumerate(online_list)])
     return render_template('./upload/download.html',file_list=file_list)
 
 
@@ -398,7 +400,7 @@ def mlinfo():
     else:
         dataid = request.args.get('id')
         host_ip = get_host_ip(PCAPS)
-        warning_list = machine_learning_warning(PCAP_NAME)
+        warning_list = machine_learning_warning(pcap_name)
         if dataid:
             if warning_list[int(dataid)-1]['data']:
                 return warning_list[int(dataid)-1]['data'].replace('\r\n', '<br>')
@@ -406,16 +408,36 @@ def mlinfo():
                 return '<center><h3>无相关数据包详情</h3></center>'
         else:
             return render_template('./exceptions/exception.html', warning=warning_list)
+#---------------------------------------在线/模型匹配---------------------------------#   
+@app.route('/onmlinfo/', methods=['POST', 'GET'])
+def onmlinfo():
+    dataid = request.args.get('id')
+    online_list = os.listdir(r"./database/pcaps/")
+    # 按文本顺序排序
+    online_list = sorted(online_list)
+    warning_list = []
+    for o in online_list[-10:]:
+        warning_list.extend(machine_learning_warning(os.path.join(r"./database/pcaps/", o)))
+    if dataid:
+        if warning_list[int(dataid)-1]['data']:
+            return warning_list[int(dataid)-1]['data'].replace('\r\n', '<br>')
+        else:
+            return '<center><h3>无相关数据包详情</h3></center>'
+    else:
+        return render_template('./exceptions/exception.html', warning=warning_list)
+        
         
 #---------------------------------------钱包地址分析---------------------------------#   
-
+from .utils.except_info import Wallet_Addr_List
 @app.route('/walletanalysis/')
-def wallet_analysis():    
-    data = [{
-        "data_id": 1,
-        "data_IP": "1.2.3.4",
-        "data_wallet": "45UNGwUMKR7AKWQK8xNWMu6sjKP4AgAhAHatGY9RgDsY3D9uHAoKpamXF3zSp8pQW9jKFS27pvfQoH5xyUb8oPMq8aS4UZf",
-    }]
+def wallet_analysis():
+    data = []
+    # data = [{
+    #     "data_id": 1,
+    #     "data_IP": "10.177.87.48",
+    #     "data_wallet": "45UNGwUMKR7AKWQK8xNWMu6sjKP4AgAhAHatGY9RgDsY3D9uHAoKpamXF3zSp8pQW9jKFS27pvfQoH5xyUb8oPMq8aS4UZf",
+    # }]
+    data = [{"data_id": i ,"data_IP": w["data_IP"],"data_wallet": w["data_wallet"] } for i , w in enumerate(Wallet_Addr_List)]
     return render_template('./evidence/walletanalysis.html', webdata=data)
 
 
@@ -426,8 +448,3 @@ def miningpool():
     return render_template('./evidence/miningpool.html')
 
 
-#--------------------------------------- 原始流量转储 ---------------------------------#   
-
-@app.route('/flowdownload/')
-def flowdownload():    
-    return render_template('./evidence/flowdownload.html')

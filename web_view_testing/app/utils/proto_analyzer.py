@@ -1,6 +1,7 @@
 #coding:UTF-8
 
 from scapy.all import *
+from scapy.layers.inet import IP, TCP, UDP, ICMP
 import collections
 
 #数据包大小统计
@@ -95,7 +96,7 @@ def http_statistic(PCAPS):
             if dport == 80 or dport == 443:
                 ip = pcap.getlayer(IP).dst
             elif sport == 80 or sport == 443:
-                ip = pcap.getlayer(IP).src
+                ip = None if pcap.getlayer(IP) else pcap.getlayer(IP).src # bug 还没有完全解决
             if ip:
                 if ip in http_dict:
                     http_dict[ip] += 1

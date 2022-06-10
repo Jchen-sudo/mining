@@ -20,14 +20,40 @@
     <div class="jumbotron">
         <div class="container">
             <div style="width: 50%;float:left;">
-            <h1>Mining Analyzer</h1>
+            <h1>流量转储</h1>
             <br>
-            <p>请选择要下载的原始流量</p>
+            <p>请您选择要下载的原始流量</p>
             </div>
             <div id="main" style="height:250px;width: 50%;float:left;"></div>
         </div>
     </div>
     <br>
+
+
+    <div class="bs-example" data-example-id="hoverable-table">
+        <table class="table table-hover table-responsive  table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">序号</th>
+                    <th class="text-center">来源</th>
+                    <th class="text-center">文件</th>
+                    <th class="text-center">下载链接</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in file_list %}
+                <tr data-toggle="modal" data-target="#myModal">
+                    <th scope="row" class="text-center" id="id">{{ file['id'] }}</th>
+                    <td class="text-nowrap text-center">{{ file['from'] }}</td>
+                    <td class="text-center">{{ file['name'] }}</td>
+                    <td class="text-center"><a href="{{ url_for('download_file',filename=file['name'] ) }}" methods="GET">下载</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+
 
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -263,33 +289,13 @@
             }
         );
     </script>
+    <script src="../../static/bootstrap-3.3.5/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+    <script src="../../static/bootstrap-3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../static/bootstrap-3.3.5/js/fileinput.min.js" type="text/javascript"></script>
+    <script src="../../static/upload/fileinput_locale_zh.js" type="text/javascript"></script>
+    <script>
 
-
-    <div>
-        <div class="container ">
-            <h3>可下载文件列表</h3>
-            <ul>
-                {% for file in file_list %}
-                <li><a href="{{ url_for('download_file',filename=file) }}" methods="GET">{{ file }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <br>
-    <div class="container"><p id='downloadinfo' class="alert alert-success">{% with messages = get_flashed_messages() %}{% if messages %}{% for message in messages %}{{ message }}{% endfor %}{% endif %}{% endwith %}</p></div>
-</div>
-
-<script src="../../static/bootstrap-3.3.5/js/jquery-1.11.3.min.js" type="text/javascript"></script>
-<script src="../../static/bootstrap-3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../../static/bootstrap-3.3.5/js/fileinput.min.js" type="text/javascript"></script>
-<script src="../../static/upload/fileinput_locale_zh.js" type="text/javascript"></script>
-<script>
-        $(document).ready(function(){
-            if ($("#downloadinfo").text() == "") {
-                $("#downloadinfo").hide()
-            }
-        })
-</script>
+    </script>
 
 </body>
 </html>

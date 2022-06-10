@@ -78,12 +78,13 @@ def stratum_warning(PCAPS:PacketList, host_ip):
    
     return webwarn_list
 
-# 匹配 login 时挖矿地址
+# 匹配 login 时的 钱包地址
 import re
+Wallet_Addr_List = [] # 存放钱包地址的全局变量
 def login_addr_warning(PCAPS:PacketList, host_ip):
     webdata = web_data(PCAPS, host_ip)
     webwarn_list = list()
-
+    global Wallet_Addr_List
     for web in webdata:
         data : str = web['data'] 
         m = re.search('(?<="login":")([A-z0-9]+?)(?=")',data)
@@ -93,7 +94,9 @@ def login_addr_warning(PCAPS:PacketList, host_ip):
                                     'time': m.group(),
                                     'data': data
                                 })
-   
+            Wallet_Addr_List.append({'data_IP': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 
+                                    'data_wallet': m.group()
+                                })
     return webwarn_list    
 
 def exception_warning(PCAPS:PacketList, host_ip):
