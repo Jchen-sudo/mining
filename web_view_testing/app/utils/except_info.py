@@ -6,9 +6,12 @@ from .data_extract import web_data
 from ..utils.proto_analyzer import dns_statistic
 from nfstream import NFStreamer
 import joblib
+import re
 
+Wallet_Addr_List = [] # 存放钱包地址的全局变量
+IP_Set = set() # 存放异常IP的全局变量
 
-#ioc匹配ip地址
+# ioc匹配ip地址
 def ip_warning(PCAPS):
     with open('./app/utils/warning/ip.json', 'r', encoding='UTF-8') as f:
         warns = f.readlines()
@@ -29,10 +32,14 @@ def ip_warning(PCAPS):
                 if src in warn_list:
                     ip_warning.append({'ip_port': dst+':'+str(dport), 'warn': u'源ip捕获:'+src, 'time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pcap.time)),'data':pcap.summary()})
                     srcs.append(src)
+                    IP_Set.add(dst)
+                    IP_Set.add(src)
             if dst not in dsts:
                 if dst in warn_list:
                     ip_warning.append({'ip_port': src+':'+str(sport), 'warn': u'目的ip捕获:'+dst, 'time': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pcap.time)),'data':pcap.summary()})
                     dsts.append(dst)
+                    IP_Set.add(dst)
+                    IP_Set.add(src)
  
     return ip_warning
 
@@ -75,12 +82,10 @@ def stratum_warning(PCAPS:PacketList, host_ip):
                                      'warn':attk, 
                                      'time':pattn, 
                                      'data':data})
-   
+                IP_Set.add(web['ip_port'].split(':')[0])
     return webwarn_list
 
 # 匹配 login 时的 钱包地址
-import re
-Wallet_Addr_List = [] # 存放钱包地址的全局变量
 def login_addr_warning(PCAPS:PacketList, host_ip):
     webdata = web_data(PCAPS, host_ip)
     webwarn_list = list()
@@ -97,6 +102,7 @@ def login_addr_warning(PCAPS:PacketList, host_ip):
             Wallet_Addr_List.append({'data_IP': web['ip_port'].split(':')[0]+':'+web['ip_port'].split(':')[1], 
                                     'data_wallet': m.group()
                                 })
+            IP_Set.add(web['ip_port'].split(':')[0])
     return webwarn_list    
 
 def exception_warning(PCAPS:PacketList, host_ip):
@@ -132,6 +138,7 @@ def machine_learning_warning(PCAP_NAME):
                                'warn': 'RF模型匹配', 'time': time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(int(infoFlows.bidirectional_first_seen_ms[info])/1000)), 
                                'data': '加密挖矿流量'})
             info += 1
+            IP_Set.add(infoFlows.src_ip[info])
     return ml_warnlist
 
 

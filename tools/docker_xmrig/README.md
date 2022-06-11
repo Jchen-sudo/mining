@@ -1,5 +1,7 @@
 # XMR挖矿程序【docker linux版本】
 
+xmrig 容器根据 Dockerfile 创建
+
 先起 miningovern，再：
 
 ```

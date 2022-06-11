@@ -433,7 +433,6 @@ from .utils.except_info import Wallet_Addr_List
 def wallet_analysis():
     data = []
     # data = [{
-    #     "data_id": 1,
     #     "data_IP": "10.177.87.48",
     #     "data_wallet": "45UNGwUMKR7AKWQK8xNWMu6sjKP4AgAhAHatGY9RgDsY3D9uHAoKpamXF3zSp8pQW9jKFS27pvfQoH5xyUb8oPMq8aS4UZf",
     # }]
@@ -441,10 +440,17 @@ def wallet_analysis():
     return render_template('./evidence/walletanalysis.html', webdata=data)
 
 
-#---------------------------------------矿池跟踪---------------------------------#   
-
-@app.route('/miningpool/')
-def miningpool():    
-    return render_template('./evidence/miningpool.html')
+#---------------------------------------可疑IP分析---------------------------------#   
+from .utils.except_info import IP_Set
+@app.route('/ipanalysis/')
+def ip_analysis():
+    # data = []
+    # data = [{
+    #     "data_IP": "10.177.87.48",
+    # },{
+    #     "data_IP": "1.1.1.1",
+    # }]
+    data = [{"data_id": i ,"data_IP": w} for i , w in enumerate(IP_Set)]
+    return render_template('./evidence/ipanalysis.html', webdata=data)
 
 
