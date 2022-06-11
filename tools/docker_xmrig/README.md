@@ -1,8 +1,14 @@
-# XMR挖矿程序【docker linux版本】
+# XMR 挖矿程序 - docker
 
 xmrig 容器根据 Dockerfile 创建
 
-先起 miningovern，再：
+先起 miningovern：
+
+```
+sudo docker run --name miningovern -it --rm -p 8081:8081 framist/miningovern:0.0.3
+```
+
+ 再：
 
 ```
 sudo docker run -it --rm --network container:miningovern xmrig
