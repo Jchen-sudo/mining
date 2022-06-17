@@ -160,6 +160,8 @@ var App = function () {
                     if ($('.btn-navbar').hasClass('collapsed') == false) {
                         $('.btn-navbar').click();
                     }
+                    jQuery(this).parent().parent().children('li.open').removeClass('open active');
+                    jQuery(this).parent().addClass(" active open");
                     return;
                 }
 
