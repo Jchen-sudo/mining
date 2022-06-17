@@ -9,11 +9,4 @@ CMD ["python", "run.py"]
 
 # 注：
 # 第6行(RUN ln ...)的问题参见：https://stackoverflow.com/questions/65410481/filenotfounderror-errno-2-no-such-file-or-directory-bliblibc-a
-# 创建镜像
-# 运行 clear 脚本 TODO
-# sudo docker build -t 'framist/miningovern:0.0.5' . 
-# sudo docker tag framist/miningovern:0.0.5 framist/miningovern
-# 发布镜像
-# sudo docker push framist/miningovern:0.0.5
-# 起 docker (临时)
-# sudo docker run --name miningovern -it --rm -p 8081:8081 framist/miningovern:latest
+# 创建镜像，运行 ./build.sh
