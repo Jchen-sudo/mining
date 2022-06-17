@@ -389,7 +389,9 @@ def error_date(error):
 def error_date(error):  
     return render_template('./error/500.html'), 500
 
-
+@app.route('/temp404/')
+def temp_404():
+    return render_template('./error/temp404.html')
 
 #---------------------------------------离线/模型匹配---------------------------------#   
 @app.route('/mlinfo/', methods=['POST', 'GET'])
