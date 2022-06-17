@@ -128,6 +128,8 @@ def machine_learning_warning(PCAP_NAME):
     info = 0
     miningFlows = NFStreamer(
         source=PCAP_NAME, statistical_analysis=True).to_pandas()
+    if miningFlows is None: # 没有抓取到数据,仍未知原因 TODO
+        return []
     infoColumns = [2, 5, 6, 14]
     infoFlows = miningFlows.iloc[:, infoColumns]
     miningFlows = miningFlows.iloc[:, FEATURE_COLUMNS_RL]
