@@ -13,7 +13,7 @@ echo "创建镜像...版本：0.1.$1"
 sudo docker build -t "framist/miningovern:0.1.$1" .   || { echo "command failed"; exit 1; }
 sudo docker tag framist/miningovern:0.1.$1 framist/miningovern  || { echo "command failed"; exit 1; }
 # 发布镜像
-echo "是否发布镜像? 版本：0.1.$1"
+echo "是否发布镜像到docker hub? 版本：0.1.$1"
 read -r -p "Are You Sure? [Y/n] " input
 case $input in
     [yY][eE][sS]|[yY])

