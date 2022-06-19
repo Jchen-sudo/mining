@@ -42,7 +42,7 @@
             text-align: center;
             font-size: 28px;
             color: rgb(255, 255, 0);
-            margin-top: 70px;
+            margin-top: 60px;
             margin-bottom: 30px; 
             letter-spacing: 15px; /* 字间距 */
             font-family: sans-serif;
@@ -52,7 +52,7 @@
             text-align: center;
             font-size: 15px;
             color: rgb(255, 255, 0);
-            margin-top: 20px;
+            margin-top: 25px;
             letter-spacing: 2px; /* 字间距 */
             font-family: sans-serif;
         }
@@ -88,7 +88,14 @@
         .button_box:active {
             background-color: #1a4f75;
         }
-
+        a {
+            text-decoration: none;
+            color: rgba(255, 255, 0, 0.5);
+        }
+        a:hover {
+            color: rgba(255, 255, 0, 1);
+            transition: 0.5s;
+        }
     </style>
 </head> 
  
@@ -99,19 +106,15 @@
 		<input class="input_box" type="password" name="password" placeholder="密码">
 		<input class="button_box" type="submit" value="登录">
         {% if error %}
-            <p class="error-message">{{ error }}</h1>
+            <p class="error-message"><a href="{{ url_for('video_help') }}" style="color: yellow;">{{ error }}</a></p>
+        {% else %}
+            <p class="error-message"><a href="{{ url_for('video_help') }}">使用指南&视频演示</a></p>
         {% endif %}
     </form>
     <!-- <script src="../../static/media/js/jquery-1.10.1.min.js"></script> -->
     <script src="../../static/media/js/vanilla-tilt.js"></script>
     <script src="../../static/media/js/jquery.particleground.js"></script>
 	<script>
-        //$(document).ready(function() {
-        //    $('#particles').particleground({
-        //      dotColor: '#5cbdaa',
-        //      lineColor: '#5cbdaa'
-        //    });
-        //});
         VanillaTilt.init(document.querySelectorAll(".login_box"), {
             max: 5,
             speed: 400, 

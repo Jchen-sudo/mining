@@ -379,7 +379,7 @@ def xmr():
 
     return render_template('./evidence/xmr.html')
 
-#---------------------------------------error 界面---------------------------------#  
+#---------------------------------------error 与 杂项 界面---------------------------------#  
 
 @app.errorhandler(404)  
 def error_date(error):  
@@ -392,6 +392,10 @@ def error_date(error):
 @app.route('/temp404/')
 def temp_404():
     return render_template('./error/temp404.html')
+
+@app.route('/video_help/')
+def video_help():
+    return render_template('./home/videohelp.html')
 
 #---------------------------------------离线/模型匹配---------------------------------#   
 @app.route('/mlinfo/', methods=['POST', 'GET'])
